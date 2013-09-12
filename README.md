@@ -2,16 +2,16 @@
 Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll plugin
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
 
-[![One Page Scroll](http://www.thepetedesign.com/images/onepage_scroll_image.png "Fancy Scroll")](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
+[![One Page Scroll](http://www.thepetedesign.com/images/onepage_scroll_image.png "One Page Scroll")](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. IE not been tested.
+Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
 
 ## Basic Usage
-One Page Scroll let you transform your website into a one page scroll that let users scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
+One Page Scroll let you transform your website into a one page scroll website that allows users to scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
 
 
 To add this to your website, simply include the latest jQuery library together with `jquery.onepage-scroll.js`, `onepage-scroll.css` into your document's `<head>` and call the function as follows:
@@ -43,9 +43,11 @@ And that's it. Now, your website should work the same way Apple's iPhone 5S webs
 ## Public Methods
 You can also trigger page move programmatically as well:
 
-| -------------------- |:-----------------------------------------------------------------------------------------------------------:|
-| $.fn.moveUp()        | This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down   |
-| $.fn.moveDown()      | This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up |
+### $.fn.moveUp()
+This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down
+
+### $.fn.moveDown()
+This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up
 
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
