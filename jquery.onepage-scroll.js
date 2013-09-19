@@ -14,6 +14,13 @@
 
 !function($){
   
+   $.support.transition = (function(){
+   	var thisBody = document.body || document.documentElement,
+		thisStyle = thisBody.style,
+	        support = thisStyle.transition !== undefined || thisStyle.WebkitTransition !== undefined || thisStyle.MozTransition !== undefined || thisStyle.MsTransition !== undefined || thisStyle.OTransition !== undefined;
+	return support;
+  })();
+
   var defaults = {
     sectionContainer: "section",
     easing: "ease",
@@ -86,6 +93,17 @@
         paginationList = "";
     
     $.fn.transformPage = function(settings, pos) {
+      if ( ! $.support.transition ) {
+		$(this).animate(
+			{
+				'top': pos + '%'
+			},
+			200
+		);
+
+		return;
+	}
+
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
