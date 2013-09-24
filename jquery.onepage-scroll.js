@@ -13,7 +13,7 @@
  * ========================================================== */
 
 !function($){
-  
+
   var defaults = {
     sectionContainer: "section",
     easing: "ease",
@@ -21,11 +21,11 @@
     pagination: true,
     updateURL: false
 	};
-	
+
 	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
+	/*  Credit: Eike Send for the awesome swipe event */
 	/*------------------------------------------------*/
-	
+
 	$.fn.swipeEvents = function() {
       return this.each(function() {
 
@@ -72,7 +72,7 @@
 
       });
     };
-	
+
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -84,20 +84,20 @@
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
-    
+
     $.fn.transformPage = function(settings, pos) {
       $(this).css({
-        "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-webkit-transform": "translate3d(0, " + pos + "%, 0)",
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-moz-transform": "translate3d(0, " + pos + "%, 0)",
         "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-ms-transform": "translate3d(0, " + pos + "%, 0)",
         "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "transform": "translate3d(0, " + pos + "%, 0)", 
+        "transform": "translate3d(0, " + pos + "%, 0)",
         "transition": "all " + settings.animationTime + "ms " + settings.easing
       });
     }
-    
+
     $.fn.moveDown = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
@@ -113,7 +113,7 @@
           }
           $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
           $("body").addClass("viewing-page-"+next.data("index"))
-          
+
           if (history.replaceState && settings.updateURL == true) {
             var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
             history.pushState( {}, document.title, href );
@@ -123,7 +123,7 @@
         el.transformPage(settings, pos);
       }
     }
-    
+
     $.fn.moveUp = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
@@ -140,7 +140,7 @@
           }
           $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
           $("body").addClass("viewing-page-"+next.data("index"))
-          
+
           if (history.replaceState && settings.updateURL == true) {
             var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
             history.pushState( {}, document.title, href );
@@ -150,7 +150,7 @@
         el.transformPage(settings, pos);
       }
     }
-    
+
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
         var timeNow = new Date().getTime();
@@ -167,9 +167,9 @@
         }
         lastAnimation = timeNow;
     }
-    
+
     // Prepare everything before binding wheel scroll
-    
+
     el.addClass("onepage-wrapper").css("position","relative");
     $.each( sections, function(i) {
       $(this).css({
@@ -181,26 +181,26 @@
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
       }
     });
-    
-    el.swipeEvents().bind("swipeDown",  function(){ 
+
+    el.swipeEvents().bind("swipeDown",  function(){
       el.moveUp();
-    }).bind("swipeUp", function(){ 
-      el.moveDown(); 
+    }).bind("swipeUp", function(){
+      el.moveDown();
     });
-    
+
     // Create Pagination and Display Them
     if(settings.pagination == true) {
       $("<ul class='onepage-pagination'>" + paginationList + "</ul>").prependTo("body");
       posTop = (el.find(".onepage-pagination").height() / 2) * -1;
       el.find(".onepage-pagination").css("margin-top", posTop);
     }
-    
+
     if(window.location.hash != "" && window.location.hash != "#1") {
       init_index =  window.location.hash.replace("#", "")
       $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
       $("body").addClass("viewing-page-"+ init_index)
       if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
-      
+
       next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
       if(next) {
         next.addClass("active")
@@ -214,7 +214,7 @@
       }
       pos = ((init_index - 1) * 100) * -1;
       el.transformPage(settings, pos);
-      
+
     }else{
       $(settings.sectionContainer + "[data-index='1']").addClass("active")
       $("body").addClass("viewing-page-1")
@@ -240,18 +240,26 @@
         if (settings.updateURL == false) return false;
       });
     }
-    
-    
-    
+
+    // This registers the keystroke
+    $(document).bind('keydown', function(event) {
+      // Left/Up arrow = previous link
+      if(event.keyCode==37 || event.keyCode==38) {
+        el.moveUp()
+      }
+      // Right/Down/Space arrow = next link
+      if(event.keyCode==39 || event.keyCode==40 || event.keyCode==32) {
+        el.moveDown();
+      }
+    });
+
     $(document).bind('mousewheel DOMMouseScroll', function(event) {
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
     return false;
-    
+
   }
-  
+
 }(window.jQuery);
-
-
