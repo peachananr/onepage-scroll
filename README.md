@@ -13,7 +13,6 @@ Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartpho
 ## Basic Usage
 One Page Scroll let you transform your website into a one page scroll website that allows users to scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
 
-
 To add this to your website, simply include the latest jQuery library together with `jquery.onepage-scroll.js`, `onepage-scroll.css` into your document's `<head>` and call the function as follows:
 
 ````html
@@ -28,7 +27,7 @@ To add this to your website, simply include the latest jQuery library together w
 </body>
 ````
 Container "Main" must be one level below the `body` tag in order to make it work full page. Now call the function to activate as follows:
- 
+
 ````javascript
 $(".main").onepage_scroll({
    sectionContainer: "section", // sectionContainer accepts any kind of selector in case you don't want to use section
@@ -57,10 +56,12 @@ This method allows you to move the page down by one. This action is equivalent t
   $(".main").moveDown();
 ````
 
-
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
 ## Other Resources
 - Tutorial (Coming Soon)
 - [Eike Send's jQuery Swipe Events](https://github.com/eikes/jquery.swipe-events.js)
 - [CSS Easing generator by Matthew Lein](http://matthewlein.com/ceaser/)
+
+## Contributors
+- Keyboard scroll support - [Zach Reed](http://iamzachreed.com/) ([@Bluetidepro](http://twitter.com/bluetidepro))
