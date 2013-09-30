@@ -248,6 +248,21 @@
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
+
+    $(document).bind('keydown', function(event) {
+      // Prevent page animation when not body has focus.
+      if (!$(event.target).is('body')) {
+        event.stopPropagation();
+      }
+      else {
+        if (event.keyCode == 40 || event.keyCode == 34 || event.keyCode == 35) {
+          el.moveDown();
+        }
+        if (event.keyCode == 38 || event.keyCode == 33 || event.keyCode == 36) {
+          el.moveUp();
+        }
+      }
+    });
     return false;
     
   }
