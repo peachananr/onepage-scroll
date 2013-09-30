@@ -86,7 +86,7 @@
         paginationList = "";
     
     $.fn.transformPage = function(settings, pos) {
-      $(this).css({
+      $(this).addClass('onepage-transform').css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
         "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
@@ -97,7 +97,15 @@
         "transition": "all " + settings.animationTime + "ms " + settings.easing
       });
     }
-    
+
+    el.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(ev){
+      if ($(this).is('.onepage-transform')) {
+        el.trigger('onepagescroll.animation.ends', {
+          originalEvent: ev
+        });
+      }
+    });
+
     $.fn.moveDown = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
@@ -121,6 +129,12 @@
         }
         pos = (index * 100) * -1;
         el.transformPage(settings, pos);
+        el.trigger('onepagescroll.animation.started', {
+          direction: 'down',
+          slide: index,
+          current: current,
+          next: next
+        });
       }
     }
     
@@ -148,6 +162,12 @@
         }
         pos = ((next.data("index") - 1) * 100) * -1;
         el.transformPage(settings, pos);
+        el.trigger('onepagescroll.animation.started', {
+          direction: 'up',
+          slide: index,
+          current: current,
+          next: next
+        });
       }
     }
     
@@ -247,6 +267,21 @@
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
+    });
+
+    $(document).bind('keydown', function(event) {
+      // Prevent page animation when not body has focus.
+      if (!$(event.target).is('body')) {
+        event.stopPropagation();
+      }
+      else {
+        if (event.keyCode == 40 || event.keyCode == 34 || event.keyCode == 35) {
+          el.moveDown();
+        }
+        if (event.keyCode == 38 || event.keyCode == 33 || event.keyCode == 36) {
+          el.moveUp();
+        }
+      }
     });
     return false;
     
