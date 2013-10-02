@@ -57,7 +57,6 @@ This method allows you to move the page down by one. This action is equivalent t
   $(".main").moveDown();
 ````
 
-
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
 ## Other Resources
