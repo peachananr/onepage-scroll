@@ -56,6 +56,27 @@ This method allows you to move the page down by one. This action is equivalent t
 ````javascript
   $(".main").moveDown();
 ````
+### $.fn.moveTop()
+This method allows you to move the page up to the first section. 
+
+````javascript
+  $(".main").moveTop();
+````
+
+### $.fn.moveBottom()
+This method allows you to move the page down to the last section.
+
+````javascript
+  $(".main").moveBottom();
+````
+
+### $.fn.moveTo(i)
+This method allows you to move the page to the desired section by index.
+
+````javascript
+  var index = 3;
+  $(".main").moveTo(index);
+````
 
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
