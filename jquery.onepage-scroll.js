@@ -82,7 +82,7 @@
     status = "off";
     topPos = 0;
     lastAnimation = 0;
-    quietPeriod = 500;
+    quietPeriod = 1500;
     paginationList = "";
  
     $.fn.transformPage = function(settings, pos) {
@@ -150,12 +150,37 @@
         el.transformPage(settings, pos);
       }
     };
+    $.fn.moveTop = function() {
+     	$(this).moveTo(1);
+    };
+    $.fn.moveBottom = function() {
+     	$(this).moveTo(total);
+    };
+    $.fn.moveTo = function(i) {
+    	if(!isFinite(String(i)) || i>total || i <= 0)//input is not a number
+    		return console.error("Invalid Index, section not found");
+     	var page_index = i;
+        if (!$(this).hasClass("active")) {
+          current = $(settings.sectionContainer + ".active");
+          next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
+          if(next) {
+            current.removeClass("active");
+            next.addClass("active");
+            $(".onepage-pagination li a" + ".active").removeClass("active");
+            $(".onepage-pagination li a" + "[data-index='" + (page_index) + "']").addClass("active");
+            $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+            $("body").addClass("viewing-page-"+next.data("index"));
+          }
+          pos = ((page_index - 1) * 100) * -1;
+          el.transformPage(settings, pos);
+        }
+    };
    
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
         var timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
-        if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
+        if(timeNow - lastAnimation < quietPeriod) {
             event.preventDefault();
             return;
         }
