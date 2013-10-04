@@ -20,6 +20,7 @@ body, .onepage-wrapper, html {
   display: block;
   position: relative;
   padding: 0;
+  -webkit-transform-style: preserve-3d;
 }
 
 .onepage-wrapper .section {
