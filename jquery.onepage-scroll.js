@@ -12,152 +12,160 @@
  *
  * ========================================================== */
 
-!function($){
-  
+ !function($){
+
   var defaults = {
     sectionContainer: "section",
     easing: "ease",
     animationTime: 1000,
     pagination: true,
-    updateURL: false
-	};
-	
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
-	/*------------------------------------------------*/
-	
-	$.fn.swipeEvents = function() {
-      return this.each(function() {
+    updateURL: false,
+    direction: "down"
+  };
 
-        var startX,
-            startY,
-            $this = $(this);
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */    
+  /*------------------------------------------------*/
 
-        $this.bind('touchstart', touchstart);
+  $.fn.swipeEvents = function() {
+    return this.each(function() {
 
-        function touchstart(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            startX = touches[0].pageX;
-            startY = touches[0].pageY;
-            $this.bind('touchmove', touchmove);
-          }
-          event.preventDefault();
+      var startX,
+      startY,
+      $this = $(this);
+
+      $this.bind('touchstart', touchstart);
+
+      function touchstart(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          startX = touches[0].pageX;
+          startY = touches[0].pageY;
+          $this.bind('touchmove', touchmove);
         }
-
-        function touchmove(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            var deltaX = startX - touches[0].pageX;
-            var deltaY = startY - touches[0].pageY;
-
-            if (deltaX >= 50) {
-              $this.trigger("swipeLeft");
-            }
-            if (deltaX <= -50) {
-              $this.trigger("swipeRight");
-            }
-            if (deltaY >= 50) {
-              $this.trigger("swipeUp");
-            }
-            if (deltaY <= -50) {
-              $this.trigger("swipeDown");
-            }
-            if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              $this.unbind('touchmove', touchmove);
-            }
-          }
-          event.preventDefault();
-        }
-
-      });
-    };
-	
-
-  $.fn.onepage_scroll = function(options){
-    var settings = $.extend({}, defaults, options),
-        el = $(this),
-        sections = $(settings.sectionContainer)
-        total = sections.length,
-        status = "off",
-        topPos = 0,
-        lastAnimation = 0,
-        quietPeriod = 500,
-        paginationList = "";
-    
-    $.fn.transformPage = function(settings, pos) {
-      $(this).css({
-        "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "transform": "translate3d(0, " + pos + "%, 0)", 
-        "transition": "all " + settings.animationTime + "ms " + settings.easing
-      });
-    }
-    
-    $.fn.moveDown = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      if(index < total) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active");
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index + 1) + "']").addClass("active");
-          }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
-            history.pushState( {}, document.title, href );
-          }
-        }
-        pos = (index * 100) * -1;
-        el.transformPage(settings, pos);
+        event.preventDefault();
       }
-    }
-    
-    $.fn.moveUp = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      if(index <= total && index > 1) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
 
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active")
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index - 1) + "']").addClass("active");
+      function touchmove(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          var deltaX = startX - touches[0].pageX;
+          var deltaY = startY - touches[0].pageY;
+
+          if (deltaX >= 50) {
+            $this.trigger("swipeLeft");
           }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
-            history.pushState( {}, document.title, href );
+          if (deltaX <= -50) {
+            $this.trigger("swipeRight");
+          }
+          if (deltaY >= 50) {
+            $this.trigger("swipeUp");
+          }
+          if (deltaY <= -50) {
+            $this.trigger("swipeDown");
+          }
+          if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+            $this.unbind('touchmove', touchmove);
           }
         }
-        pos = ((next.data("index") - 1) * 100) * -1;
-        el.transformPage(settings, pos);
+        event.preventDefault();
       }
+
+    });
+};
+
+
+$.fn.onepage_scroll = function(options){
+  var settings = $.extend({}, defaults, options),
+  el = $(this),
+  sections = $(settings.sectionContainer)
+  total = sections.length,
+  status = "off",
+  topPos = 0,
+  lastAnimation = 0,
+  quietPeriod = 500,
+  paginationList = "";
+
+
+
+  $.fn.transformPage = function(settings, pos) {
+    var translateDirection = "translate3d(0, " + pos + "%, 0)";
+    if(settings.direction == 'right'){
+      translateDirection = "translate3d("+ pos + "%, 0 , 0)";
     }
-    
-    function init_scroll(event, delta) {
-        deltaOfInterest = delta;
-        var timeNow = new Date().getTime();
+
+    $(this).css({
+      "-webkit-transform": translateDirection, 
+      "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
+      "-moz-transform": translateDirection, 
+      "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
+      "-ms-transform": translateDirection, 
+      "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
+      "transform": translateDirection, 
+      "transition": "all " + settings.animationTime + "ms " + settings.easing
+    });
+  }
+
+  $.fn.moveDown = function() {
+    var el = $(this)
+    index = $(settings.sectionContainer +".active").data("index");
+    if(index < total) {
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+      if(next) {
+        current.removeClass("active")
+        next.addClass("active");
+        if(settings.pagination == true) {
+          $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+          $(".onepage-pagination li a" + "[data-index='" + (index + 1) + "']").addClass("active");
+        }
+        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        $("body").addClass("viewing-page-"+next.data("index"))
+
+        if (history.replaceState && settings.updateURL == true) {
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+          history.pushState( {}, document.title, href );
+        }
+      }
+      pos = (index * 100) * -1;
+      el.transformPage(settings, pos);
+    }
+  }
+
+  $.fn.moveUp = function() {
+    var el = $(this)
+    index = $(settings.sectionContainer +".active").data("index");
+    if(index <= total && index > 1) {
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
+
+      if(next) {
+        current.removeClass("active")
+        next.addClass("active")
+        if(settings.pagination == true) {
+          $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+          $(".onepage-pagination li a" + "[data-index='" + (index - 1) + "']").addClass("active");
+        }
+        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        $("body").addClass("viewing-page-"+next.data("index"))
+
+        if (history.replaceState && settings.updateURL == true) {
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+          history.pushState( {}, document.title, href );
+        }
+      }
+      pos = ((next.data("index") - 1) * 100) * -1;
+      el.transformPage(settings, pos);
+    }
+  }
+
+  function init_scroll(event, delta) {
+    deltaOfInterest = delta;
+    var timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
         if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
-            event.preventDefault();
-            return;
+          event.preventDefault();
+          return;
         }
 
         if (deltaOfInterest < 0) {
@@ -166,16 +174,23 @@
           el.moveUp()
         }
         lastAnimation = timeNow;
-    }
-    
+      }
+
     // Prepare everything before binding wheel scroll
     
     el.addClass("onepage-wrapper").css("position","relative");
     $.each( sections, function(i) {
-      $(this).css({
-        position: "absolute",
-        top: topPos + "%"
-      }).addClass("section").attr("data-index", i+1);
+      if(settings.direction == 'right'){
+        $(this).css({
+          position: "absolute",
+          left: topPos + "%"
+        }).addClass("section").attr("data-index", i+1);
+      }else{
+        $(this).css({
+          position: "absolute",
+          top: topPos + "%"
+        }).addClass("section").attr("data-index", i+1);
+      }
       topPos = topPos + 100;
       if(settings.pagination == true) {
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
@@ -253,5 +268,3 @@
   }
   
 }(window.jQuery);
-
-
