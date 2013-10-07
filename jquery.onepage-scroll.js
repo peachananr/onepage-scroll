@@ -21,13 +21,13 @@
     pagination: true,
     updateURL: false,
     direction: "vertical"
-	};
-	
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
-	/*------------------------------------------------*/
-	
-	$.fn.swipeEvents = function() {
+  };
+  
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */    
+  /*------------------------------------------------*/
+  
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -73,7 +73,7 @@
 
       });
     };
-	
+  
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -203,11 +203,20 @@
       }
     });
     
-    el.swipeEvents().bind("swipeDown",  function(){ 
-      el.moveUp();
-    }).bind("swipeUp", function(){ 
-      el.moveDown(); 
-    });
+    if( settings.direction == 'horizontal' ) {
+      el.swipeEvents().bind("swipeRight", function(){ 
+        el.moveUp(); 
+      }).bind("swipeLeft", function(){ 
+        el.moveDown(); 
+      });
+    }
+    else {
+      el.swipeEvents().bind("swipeDown",  function(){ 
+        el.moveUp();
+      }).bind("swipeUp", function(){ 
+        el.moveDown(); 
+      });
+    }
     
     // Create Pagination and Display Them
     if(settings.pagination == true) {
