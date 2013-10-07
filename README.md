@@ -43,15 +43,16 @@ And that's it. Now, your website should work the same way Apple's iPhone 5S webs
 ## Public Methods
 You can also trigger page move programmatically as well:
 
-### $.fn.moveUp()
-This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down.
+### $.fn.moveUp(increment)
+This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down. The `increment` variable is an option which allows the moving of the page up by the given increment.
 
 ````javascript
   $(".main").moveUp();
 ````
 
-### $.fn.moveDown()
-This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up.
+### $.fn.moveDown(increment)
+This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up. The `increment` variable is an option which allows the moving of the page down by the given increment.
+
 
 ````javascript
   $(".main").moveDown();

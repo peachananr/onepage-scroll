@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1
+ * jquery-onepage-scroll.js v1.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -82,9 +82,9 @@
         total = sections.length,
         status = "off",
         topPos = 0,
-        leftPos = 0, // new
+        leftPos = 0,
         lastAnimation = 0,
-        quietPeriod = 500,
+        quietPeriod = 300,
         paginationList = "";
     
     $.fn.transformPage = function(settings, pos) {
@@ -109,55 +109,53 @@
       });
     };
     
-    $.fn.moveDown = function(idx) {
+    $.fn.moveDown = function(increment) {
       var el = $(this);
-      index = (idx != undefined) 
-        ? idx
-        : $(settings.sectionContainer +".active").data("index");
+      increment = (increment != undefined) ? increment : 1;
+      index = $(settings.sectionContainer +".active").data("index");
       if(index < total) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+        next = $(settings.sectionContainer + "[data-index='" + (index + increment) + "']");
         if(next) {
           current.removeClass("active")
           next.addClass("active");
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index + 1) + "']").addClass("active");
+            $(".onepage-pagination li a" + "[data-index='" + (index + increment) + "']").addClass("active");
           }
           $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
           $("body").addClass("viewing-page-"+next.data("index"))
           
           if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + increment);
             history.pushState( {}, document.title, href );
           }
         }
-        pos = (index * 100) * -1;
+        // pos = (index * 100) * -1;
+        pos = ((next.data("index") - 1) * 100) * -1;
         el.transformPage(settings, pos);
       }
     }
     
-    $.fn.moveUp = function(idx) {
+    $.fn.moveUp = function(increment) {
       var el = $(this);
-      index = (idx != undefined) 
-        ? idx
-        : $(settings.sectionContainer +".active").data("index");
+      increment = (increment != undefined) ? increment : 1;
+      index = $(settings.sectionContainer +".active").data("index");
       if(index <= total && index > 1) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
-
+        next = $(settings.sectionContainer + "[data-index='" + (index - increment) + "']");
         if(next) {
           current.removeClass("active")
           next.addClass("active")
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index - 1) + "']").addClass("active");
+            $(".onepage-pagination li a" + "[data-index='" + (index - increment) + "']").addClass("active");
           }
           $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
           $("body").addClass("viewing-page-"+next.data("index"))
           
           if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - increment);
             history.pushState( {}, document.title, href );
           }
         }
