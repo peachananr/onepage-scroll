@@ -3,9 +3,7 @@
   "version": "1.1.0",
   "homepage": "https://github.com/peachananr/onepage-scroll",
   "authors": [
-    "peachananr <pete@bucketlistly.com>",
-    "eikes <eike.send@gmail.com>",
-    "frederickk <ken.frederick@gmx.de>"
+    "peachananr <pete@bucketlistly.com>"
   ],
   "description": "Create an Apple-like website that let user scroll one page at a time",
   "main": [

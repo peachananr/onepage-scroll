@@ -109,9 +109,11 @@
       });
     };
     
-    $.fn.moveDown = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
+    $.fn.moveDown = function(idx) {
+      var el = $(this);
+      index = (idx != undefined) 
+        ? idx
+        : $(settings.sectionContainer +".active").data("index");
       if(index < total) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
         next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
@@ -135,9 +137,11 @@
       }
     }
     
-    $.fn.moveUp = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
+    $.fn.moveUp = function(idx) {
+      var el = $(this);
+      index = (idx != undefined) 
+        ? idx
+        : $(settings.sectionContainer +".active").data("index");
       if(index <= total && index > 1) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
         next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
