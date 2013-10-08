@@ -106,7 +106,7 @@
         next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
         if(next) {
           current.removeClass("active")
-          next.addClass("active");
+          next.addClass("active").trigger("activated");
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
             $(".onepage-pagination li a" + "[data-index='" + (index + 1) + "']").addClass("active");
@@ -133,7 +133,7 @@
 
         if(next) {
           current.removeClass("active")
-          next.addClass("active")
+          next.addClass("active").trigger("activated");
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
             $(".onepage-pagination li a" + "[data-index='" + (index - 1) + "']").addClass("active");
@@ -203,7 +203,7 @@
       
       next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
       if(next) {
-        next.addClass("active")
+        next.addClass("active").trigger("activated");
         if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + (init_index) + "']").addClass("active");
         $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
         $("body").addClass("viewing-page-"+next.data("index"))
@@ -228,7 +228,7 @@
           next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
           if(next) {
             current.removeClass("active")
-            next.addClass("active")
+            next.addClass("active").trigger("activated");
             $(".onepage-pagination li a" + ".active").removeClass("active");
             $(".onepage-pagination li a" + "[data-index='" + (page_index) + "']").addClass("active");
             $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
