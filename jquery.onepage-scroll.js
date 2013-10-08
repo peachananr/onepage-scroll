@@ -19,7 +19,8 @@
     easing: "ease",
     animationTime: 1000,
     pagination: true,
-    updateURL: false
+    updateURL: false,
+    quietPeriod: 200
 	};
 	
 	/*------------------------------------------------*/
@@ -37,12 +38,13 @@
 
         function touchstart(event) {
           var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
+          if (touches && touches.length > 1) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
             $this.bind('touchmove', touchmove);
+            event.preventDefault();
           }
-          event.preventDefault();
+          
         }
 
         function touchmove(event) {
@@ -51,19 +53,19 @@
             var deltaX = startX - touches[0].pageX;
             var deltaY = startY - touches[0].pageY;
 
-            if (deltaX >= 50) {
+            if (deltaX >= 80) {
               $this.trigger("swipeLeft");
             }
-            if (deltaX <= -50) {
+            if (deltaX <= -80) {
               $this.trigger("swipeRight");
             }
-            if (deltaY >= 50) {
+            if (deltaY >= 80) {
               $this.trigger("swipeUp");
             }
-            if (deltaY <= -50) {
+            if (deltaY <= -80) {
               $this.trigger("swipeDown");
             }
-            if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+            if (Math.abs(deltaX) >= 80 || Math.abs(deltaY) >= 80) {
               $this.unbind('touchmove', touchmove);
             }
           }
@@ -82,7 +84,6 @@
     status = "off";
     topPos = 0;
     lastAnimation = 0;
-    quietPeriod = 1500;
     paginationList = "";
  
     $.fn.transformPage = function(settings, pos) {
@@ -106,6 +107,7 @@
         next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
         if(next) {
           current.removeClass("active");
+          current.addClass("moveDown");
           next.addClass("active");
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
@@ -133,6 +135,7 @@
 
         if(next) {
           current.removeClass("active");
+          current.addClass("moveUp");
           next.addClass("active");
           if(settings.pagination == true) {
             $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
@@ -180,7 +183,7 @@
         deltaOfInterest = delta;
         var timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
-        if(timeNow - lastAnimation < quietPeriod) {
+        if(timeNow - lastAnimation < settings.quietPeriod) {
             event.preventDefault();
             return;
         }
