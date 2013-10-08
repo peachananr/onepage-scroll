@@ -36,16 +36,19 @@
         $this.bind('touchstart', touchstart);
 
         function touchstart(event) {
+          event.preventDefault();
+          var isClickableElement = event.originalEvent.target.tagName.match(/a|input|button|textarea/i);
+          if (isClickableElement) return $(event.originalEvent.target).trigger('click').trigger("focus");
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
             $this.bind('touchmove', touchmove);
           }
-          event.preventDefault();
         }
 
         function touchmove(event) {
+          event.preventDefault();
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
             var deltaX = startX - touches[0].pageX;
@@ -67,7 +70,6 @@
               $this.unbind('touchmove', touchmove);
             }
           }
-          event.preventDefault();
         }
 
       });
@@ -253,5 +255,6 @@
   }
   
 }(window.jQuery);
+
 
 
