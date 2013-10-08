@@ -1,4 +1,4 @@
-/* ===========================================================
+/* =========================================================
  * jquery-onepage-scroll.js v1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
@@ -243,6 +243,20 @@
     
     
     
+    $(document).on('keydown', function(event) {
+      var KEY_UP = 38,
+        KEY_DOWN = 40,
+        pressedUpArrow = (event.keyCode == KEY_UP),
+        pressedDownArrow = (event.keyCode == KEY_DOWN);
+      if (pressedUpArrow || pressedDownArrow) {
+        event.preventDefault();
+        var delta = pressedUpArrow ? +1
+                  : pressedDownArrow ? -1
+                  : 0;
+        init_scroll(event, delta);
+      }
+    });
+
     $(document).bind('mousewheel DOMMouseScroll', function(event) {
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
