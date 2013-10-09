@@ -1,0 +1,16 @@
+{
+  "name": "onepage-scroll",
+  "version": "1.0.0",
+  "author": "Pete R",
+  "main": [
+    "jquery.onepage-scroll.js",
+    "onepage-scroll.css"
+  ],
+  "ignore": [
+    "Demo",
+    "README.md"
+  ],
+  "dependencies": {
+    "jquery": "~1.10.2"
+  }
+}
