@@ -10,9 +10,12 @@
  * Credit: Eike Send for the awesome swipe event
  * https://github.com/peachananr/onepage-scroll
  *
+ * Edited by Jay Contonio at Mindspace
+ * - Added event broadcasts for when we scroll up or down
+ * - Added a current slide variable
  * ========================================================== */
 
-!function($){
+!function($) {
   
   var defaults = {
     sectionContainer: "section",
@@ -20,67 +23,68 @@
     animationTime: 1000,
     pagination: true,
     updateURL: false
-	};
-	
+  }
+
 	/*------------------------------------------------*/
 	/*  Credit: Eike Send for the awesome swipe event */    
 	/*------------------------------------------------*/
 	
 	$.fn.swipeEvents = function() {
-      return this.each(function() {
+    return this.each(function() {
 
-        var startX,
-            startY,
-            $this = $(this);
+      var startX,
+          startY,
+          $this = $(this);
 
-        $this.bind('touchstart', touchstart);
+      $this.bind('touchstart', touchstart);
 
-        function touchstart(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            startX = touches[0].pageX;
-            startY = touches[0].pageY;
-            $this.bind('touchmove', touchmove);
-          }
-          event.preventDefault();
+      function touchstart(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          startX = touches[0].pageX;
+          startY = touches[0].pageY;
+          $this.bind('touchmove', touchmove);
         }
+        event.preventDefault();
+      }
 
-        function touchmove(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            var deltaX = startX - touches[0].pageX;
-            var deltaY = startY - touches[0].pageY;
+      function touchmove(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          var deltaX = startX - touches[0].pageX;
+          var deltaY = startY - touches[0].pageY;
 
-            if (deltaX >= 50) {
-              $this.trigger("swipeLeft");
-            }
-            if (deltaX <= -50) {
-              $this.trigger("swipeRight");
-            }
-            if (deltaY >= 50) {
-              $this.trigger("swipeUp");
-            }
-            if (deltaY <= -50) {
-              $this.trigger("swipeDown");
-            }
-            if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              $this.unbind('touchmove', touchmove);
-            }
+          if (deltaX >= 50) {
+            $this.trigger("swipeLeft");
           }
-          event.preventDefault();
+          if (deltaX <= -50) {
+            $this.trigger("swipeRight");
+          }
+          if (deltaY >= 50) {
+            $this.trigger("swipeUp");
+          }
+          if (deltaY <= -50) {
+            $this.trigger("swipeDown");
+          }
+          if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+            $this.unbind('touchmove', touchmove);
+          }
         }
+        event.preventDefault();
+      }
 
-      });
-    };
+    });
+  };
 	
 
-  $.fn.onepage_scroll = function(options){
+  $.fn.onepage_scroll = function(options) {
     var settings = $.extend({}, defaults, options),
         el = $(this),
         sections = $(settings.sectionContainer)
         total = sections.length,
         status = "off",
         topPos = 0,
+        currentPos = 0,
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
@@ -125,7 +129,7 @@
     }
     
     $.fn.moveUp = function() {
-      var el = $(this)
+      var el = $(this);
       index = $(settings.sectionContainer +".active").data("index");
       if(index <= total && index > 1) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
@@ -165,6 +169,9 @@
         } else {
           el.moveUp()
         }
+        // Broadcast current position 
+        // console.log('Current: ' + (parseInt($(settings.sectionContainer +".active").data("index")) - 1));
+        el.trigger('swiped', [(parseInt($(settings.sectionContainer +".active").data("index")) - 1)]);
         lastAnimation = timeNow;
     }
     
