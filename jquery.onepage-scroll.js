@@ -75,7 +75,6 @@
 
     });
   };
-	
 
   $.fn.onepage_scroll = function(options) {
     var settings = $.extend({}, defaults, options),
@@ -193,6 +192,10 @@
     // Prepare everything before binding wheel scroll
     
     el.addClass("onepage-wrapper").css("position","relative");
+    el.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
+      // Broadcast we are done moving
+      el.trigger('animationComplete');
+    });
     $.each( sections, function(i) {
       $(this).css({
         position: "absolute",
