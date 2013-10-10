@@ -154,6 +154,21 @@
         el.transformPage(settings, pos);
       }
     }
+
+    $.fn.moveToSlide = function(newIndex) { 
+      var el = $(this);
+      index = $(settings.sectionContainer +".active").data("index");
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + newIndex + "']");
+      if (next) {
+        current.removeClass("active");
+        next.addClass("active");
+      }
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"));
+      pos = ((next.data("index") - 1) * 100) * -1;
+      el.transformPage(settings, pos);
+    }
     
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
