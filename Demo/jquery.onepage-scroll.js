@@ -248,6 +248,15 @@
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
+
+    $(document).keydown(function(e){
+      if (e.keyCode == 40) {
+        el.moveDown()
+      } else if(e.keyCode == 38) {
+        el.moveUp()
+      }
+    });
+
     return false;
     
   }
