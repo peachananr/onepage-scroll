@@ -12,7 +12,7 @@
  *
  * ========================================================== */
 
-!function($){
+!function($) {
   
   var defaults = {
     sectionContainer: "section",
@@ -31,52 +31,51 @@
   $.fn.swipeEvents = function() {
       return this.each(function() {
 
-        var startX,
-            startY,
-            $this = $(this);
+      var startX,
+          startY,
+          $this = $(this);
 
-        $this.bind('touchstart', touchstart);
+      $this.bind('touchstart', touchstart);
 
-        function touchstart(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            startX = touches[0].pageX;
-            startY = touches[0].pageY;
-            $this.bind('touchmove', touchmove);
-          }
-          event.preventDefault();
+      function touchstart(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          startX = touches[0].pageX;
+          startY = touches[0].pageY;
+          $this.bind('touchmove', touchmove);
         }
+        event.preventDefault();
+      }
 
-        function touchmove(event) {
-          var touches = event.originalEvent.touches;
-          if (touches && touches.length) {
-            var deltaX = startX - touches[0].pageX;
-            var deltaY = startY - touches[0].pageY;
+      function touchmove(event) {
+        var touches = event.originalEvent.touches;
+        if (touches && touches.length) {
+          var deltaX = startX - touches[0].pageX;
+          var deltaY = startY - touches[0].pageY;
 
-            if (deltaX >= 50) {
-              $this.trigger("swipeLeft");
-            }
-            if (deltaX <= -50) {
-              $this.trigger("swipeRight");
-            }
-            if (deltaY >= 50) {
-              $this.trigger("swipeUp");
-            }
-            if (deltaY <= -50) {
-              $this.trigger("swipeDown");
-            }
-            if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              $this.unbind('touchmove', touchmove);
-            }
+          if (deltaX >= 50) {
+            $this.trigger("swipeLeft");
           }
-          event.preventDefault();
+          if (deltaX <= -50) {
+            $this.trigger("swipeRight");
+          }
+          if (deltaY >= 50) {
+            $this.trigger("swipeUp");
+          }
+          if (deltaY <= -50) {
+            $this.trigger("swipeDown");
+          }
+          if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+            $this.unbind('touchmove', touchmove);
+          }
         }
+        event.preventDefault();
+      }
 
       });
     };
-  
 
-  $.fn.onepage_scroll = function(options){
+  $.fn.onepage_scroll = function(options) {
     var settings = $.extend({}, defaults, options),
         el = $(this),
         sections = $(settings.sectionContainer)
@@ -84,6 +83,7 @@
         status = "off",
         topPos = 0,
         leftPos = 0,
+        currentPos = 0,
         lastAnimation = 0,
         quietPeriod = 300,
         paginationList = "";
@@ -164,6 +164,21 @@
         el.transformPage(settings, pos);
       }
     }
+
+    $.fn.moveToSlide = function(newIndex) { 
+      var el = $(this);
+      index = $(settings.sectionContainer +".active").data("index");
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + newIndex + "']");
+      if (next) {
+        current.removeClass("active");
+        next.addClass("active");
+      }
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"));
+      pos = ((next.data("index") - 1) * 100) * -1;
+      el.transformPage(settings, pos);
+    }
     
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
@@ -179,13 +194,20 @@
         } else {
           el.moveUp()
         }
-        console.log( deltaOfInterest );
+
+        // Broadcast current position 
+        // console.log('Current: ' + (parseInt($(settings.sectionContainer +".active").data("index")) - 1));
+        el.trigger('swiped', [(parseInt($(settings.sectionContainer +".active").data("index")) - 1)]);
         lastAnimation = timeNow;
     }
     
     // Prepare everything before binding wheel scroll
     
     el.addClass("onepage-wrapper").css("position","relative");
+    el.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
+      // Broadcast we are done moving
+      el.trigger('animationComplete');
+    });
     $.each( sections, function(i) {
       $(this).css({
         position: "absolute",
