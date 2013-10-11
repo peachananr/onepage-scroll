@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.1
+ * jquery-onepage-scroll.js v1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -20,7 +20,8 @@
     animationTime: 1000,
     pagination: true,
     updateURL: false,
-    direction: "vertical"
+    direction: "vertical",
+    touchTarget: null
   };
   
   /*------------------------------------------------*/
@@ -178,6 +179,7 @@
         } else {
           el.moveUp()
         }
+        console.log( deltaOfInterest );
         lastAnimation = timeNow;
     }
     
@@ -206,6 +208,14 @@
     });
     
     if( settings.direction == 'horizontal' ) {
+      if( settings.touchTarget != null ) {
+        $(settings.touchTarget).swipeEvents().bind("swipeRight", function(){ 
+          el.moveUp(); 
+        }).bind("swipeLeft", function(){ 
+          el.moveDown(); 
+        });
+      }
+
       el.swipeEvents().bind("swipeRight", function(){ 
         el.moveUp(); 
       }).bind("swipeLeft", function(){ 
@@ -213,6 +223,14 @@
       });
     }
     else {
+      if( settings.touchTarget != null ) {
+        $(settings.touchTarget).swipeEvents().bind("swipeDown",  function(){ 
+          el.moveUp();
+        }).bind("swipeUp", function(){ 
+          el.moveDown(); 
+        });
+      }
+
       el.swipeEvents().bind("swipeDown",  function(){ 
         el.moveUp();
       }).bind("swipeUp", function(){ 

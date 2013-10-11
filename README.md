@@ -36,7 +36,8 @@ $(".main").onepage_scroll({
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
-   direction: 'vertical' // You can control the direction of scroll and order of sections to be "vertical" or "horizontal"
+   direction: 'vertical' // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
+   touchTarget: '.top-layer' // You can attach the touch events to another container, for example if using multiple z-index div's
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
