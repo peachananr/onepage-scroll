@@ -10,9 +10,6 @@
  * Credit: Eike Send for the awesome swipe event
  * https://github.com/peachananr/onepage-scroll
  *
- * Edited by Jay Contonio at Mindspace
- * - Added event broadcasts for when we scroll up or down
- * - Added a current slide variable
  * ========================================================== */
 
 !function($) {
