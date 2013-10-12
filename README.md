@@ -35,10 +35,25 @@ $(".main").onepage_scroll({
    easing: "ease", // Easing options accepts the CSS3 easing animation such "ease", "linear", "ease-in", "ease-out", "ease-in-out", or even cubic bezier value such as "cubic-bezier(0.175, 0.885, 0.420, 1.310)"
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
-   updateURL: false // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
+   updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
+   onBeforePageSwitch: null,
+   onAfterPageSwitch: null,
+   onPageJump: null
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
+
+## Callbacks
+You can use callbacks to perform actions before, while or after page jumps.
+
+### onBeforePageSwitch(currentPage)
+Gets called before switching a page. `currentPage` is the index of the old page.
+
+### onAfterPageSwitch(newPage)
+Gets called after switching a page. `newPage` is the index of the new page.
+
+### onPageJump(oldPage, newPage)
+Gets called when jumping a page (i.e. clicking a dot in the pagination or using an URL). `oldPage` is the index of the old page, `newPage` of the new page.
 
 ## Public Methods
 You can also trigger page move programmatically as well:
