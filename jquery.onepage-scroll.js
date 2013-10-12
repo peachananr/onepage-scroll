@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1
+ * jquery-onepage-scroll.js v1.3
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -9,6 +9,15 @@
  *
  * Credit: Eike Send for the awesome swipe event
  * https://github.com/peachananr/onepage-scroll
+ *
+ * Credit: Ken Frederick for the "direction", "touchTarget" and bower.json options
+ * https://github.com/frederickk
+ *
+ * Credit: Jay Contonio for the moveToSlide method
+ * https://github.com/jcontonio
+ *
+ * Credit: Benjamin Schmidt for the onBeforePageSwitch, onAfterPageSwitch, onPageJunp callbacks
+ * https://github.com/bluefirex
  *
  * ========================================================== */
 
@@ -20,8 +29,15 @@
     animationTime: 1000,
     pagination: true,
     updateURL: false,
+
+    // additions
     direction: "vertical",
-    touchTarget: null
+    touchTarget: null,
+
+    // events
+    onBeforePageSwitch: null,
+    onAfterPageSwitch: null,
+    onPageJump: null
   };
   
   /*------------------------------------------------*/
@@ -114,6 +130,9 @@
       var el = $(this);
       increment = (increment != undefined) ? increment : 1;
       index = $(settings.sectionContainer +".active").data("index");
+
+      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
+
       if(index < total) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
         next = $(settings.sectionContainer + "[data-index='" + (index + increment) + "']");
@@ -135,6 +154,8 @@
         // pos = (index * 100) * -1;
         pos = ((next.data("index") - 1) * 100) * -1;
         el.transformPage(settings, pos);
+
+        if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index + 1);
       }
     }
     
@@ -142,6 +163,9 @@
       var el = $(this);
       increment = (increment != undefined) ? increment : 1;
       index = $(settings.sectionContainer +".active").data("index");
+
+      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
+
       if(index <= total && index > 1) {
         current = $(settings.sectionContainer + "[data-index='" + index + "']");
         next = $(settings.sectionContainer + "[data-index='" + (index - increment) + "']");
@@ -162,12 +186,17 @@
         }
         pos = ((next.data("index") - 1) * 100) * -1;
         el.transformPage(settings, pos);
+
+        if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index - 1);
       }
     }
 
     $.fn.moveToSlide = function(newIndex) { 
       var el = $(this);
       index = $(settings.sectionContainer +".active").data("index");
+
+      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
+
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + newIndex + "']");
       if (next) {
@@ -178,6 +207,8 @@
       $("body").addClass("viewing-page-"+next.data("index"));
       pos = ((next.data("index") - 1) * 100) * -1;
       el.transformPage(settings, pos);
+
+      if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index - 1);
     }
     
     function init_scroll(event, delta) {
@@ -279,6 +310,8 @@
       $("body").addClass("viewing-page-"+ init_index)
       if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
       
+      if (typeof settings.onPageJump == 'function') settings.onPageJump(0, init_index);
+
       next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
       if(next) {
         next.addClass("active")
@@ -304,6 +337,9 @@
         if (!$(this).hasClass("active")) {
           current = $(settings.sectionContainer + ".active")
           next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
+
+          if (typeof settings.onPageJump == 'function') settings.onPageJump(current, page_index);
+
           if(next) {
             current.removeClass("active")
             next.addClass("active")
@@ -331,5 +367,4 @@
   }
   
 }(window.jQuery);
-
 

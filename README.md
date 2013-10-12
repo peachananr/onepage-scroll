@@ -36,11 +36,29 @@ $(".main").onepage_scroll({
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
+<<<<<<< HEAD
    direction: 'vertical' // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
    touchTarget: '.top-layer' // You can attach the touch events to another container, for example if using multiple z-index div's
+=======
+   onBeforePageSwitch: null,
+   onAfterPageSwitch: null,
+   onPageJump: null
+>>>>>>> bluefirex/master
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
+
+## Callbacks
+You can use callbacks to perform actions before, while or after page jumps.
+
+### onBeforePageSwitch(currentPage)
+Gets called before switching a page. `currentPage` is the index of the old page.
+
+### onAfterPageSwitch(newPage)
+Gets called after switching a page. `newPage` is the index of the new page.
+
+### onPageJump(oldPage, newPage)
+Gets called when jumping a page (i.e. clicking a dot in the pagination or using an URL). `oldPage` is the index of the old page, `newPage` of the new page.
 
 ## Public Methods
 You can also trigger page move programmatically as well:
@@ -58,6 +76,14 @@ This method allows you to move the page down by one. This action is equivalent t
 
 ````javascript
   $(".main").moveDown();
+````
+
+### $.fn.moveToSlide(newIndex)
+This method allows you to move to a chosen page index. The `newIndex` variable is the destination page index.
+
+
+````javascript
+  $(".main").moveToSlide(3);
 ````
 
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
