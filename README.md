@@ -35,7 +35,10 @@ $(".main").onepage_scroll({
    easing: "ease", // Easing options accepts the CSS3 easing animation such "ease", "linear", "ease-in", "ease-out", "ease-in-out", or even cubic bezier value such as "cubic-bezier(0.175, 0.885, 0.420, 1.310)"
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
-   updateURL: false // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
+   updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
+   beforeMove: function(index) {}, // This option accepts a callback function. The function will be called before the page moves.
+   afterMove: function(index) {}, // This option accepts a callback function. The function will be called after the page moves.
+   loop: false // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
@@ -55,6 +58,31 @@ This method allows you to move the page down by one. This action is equivalent t
 
 ````javascript
   $(".main").moveDown();
+````
+
+## Callbacks
+You can use callbacks to perform actions before or after the page move.
+
+### beforeMove(current_page_index)
+This callback gets called before the plugin performs its move.
+
+````javascript
+  $(".main").onepage_scroll({
+    beforeMove: function(index) {
+      ...
+    }
+  });
+````
+
+### afterMove(next_page_index)
+This callback gets called after the move animation was performed.
+
+````javascript
+  $(".main").onepage_scroll({
+    afterMove: function(index) {
+      ...
+    }
+  });
 ````
 
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).

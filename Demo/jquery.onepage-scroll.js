@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1
+ * jquery-onepage-scroll.js v1.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -9,6 +9,8 @@
  *
  * Credit: Eike Send for the awesome swipe event
  * https://github.com/peachananr/onepage-scroll
+ * 
+ * License: GPL v3
  *
  * ========================================================== */
 
@@ -19,7 +21,11 @@
     easing: "ease",
     animationTime: 1000,
     pagination: true,
-    updateURL: false
+    updateURL: false,
+    keyboard: true,
+    beforeMove: null,
+    afterMove: null,
+    loop: false
 	};
 	
 	/*------------------------------------------------*/
@@ -85,7 +91,7 @@
         quietPeriod = 500,
         paginationList = "";
     
-    $.fn.transformPage = function(settings, pos) {
+    $.fn.transformPage = function(settings, pos, index) {
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
@@ -96,59 +102,67 @@
         "transform": "translate3d(0, " + pos + "%, 0)", 
         "transition": "all " + settings.animationTime + "ms " + settings.easing
       });
+      $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+        if (typeof settings.afterMove == 'function') settings.afterMove(index);
+      });
     }
     
     $.fn.moveDown = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
-      if(index < total) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active");
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index + 1) + "']").addClass("active");
-          }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
-            history.pushState( {}, document.title, href );
-          }
-        }
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+      if(next.length < 1) {
+        pos = 0;
+        next = $(settings.sectionContainer + "[data-index='1']");
+      }else {
         pos = (index * 100) * -1;
-        el.transformPage(settings, pos);
       }
+      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"));
+      current.removeClass("active")
+      next.addClass("active");
+      if(settings.pagination == true) {
+        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
+      }
+      
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"))
+      
+      if (history.replaceState && settings.updateURL == true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+        history.pushState( {}, document.title, href );
+      }   
+      el.transformPage(settings, pos, index);
     }
     
     $.fn.moveUp = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
-      if(index <= total && index > 1) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
-
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active")
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index - 1) + "']").addClass("active");
-          }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
-            history.pushState( {}, document.title, href );
-          }
-        }
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
+      
+      if(next.length < 1) {
+        pos = ((total - 1) * 100) * -1;
+        next = $(settings.sectionContainer + "[data-index='"+total+"']");
+      }else {
         pos = ((next.data("index") - 1) * 100) * -1;
-        el.transformPage(settings, pos);
       }
+      if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
+      current.removeClass("active")
+      next.addClass("active")
+      if(settings.pagination == true) {
+        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
+      }
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"))
+      
+      if (history.replaceState && settings.updateURL == true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+        history.pushState( {}, document.title, href );
+      }
+      el.transformPage(settings, pos, index);
     }
     
     function init_scroll(event, delta) {
@@ -213,7 +227,7 @@
         }
       }
       pos = ((init_index - 1) * 100) * -1;
-      el.transformPage(settings, pos);
+      el.transformPage(settings, pos, init_index);
       
     }else{
       $(settings.sectionContainer + "[data-index='1']").addClass("active")
@@ -235,7 +249,7 @@
             $("body").addClass("viewing-page-"+next.data("index"))
           }
           pos = ((page_index - 1) * 100) * -1;
-          el.transformPage(settings, pos);
+          el.transformPage(settings, pos, page_index);
         }
         if (settings.updateURL == false) return false;
       });
@@ -248,10 +262,25 @@
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
+    
+    if(settings.keyboard == true) {
+      $(document).keydown(function(e) {
+        var tag = e.target.tagName.toLowerCase();
+        switch(e.which) {
+          case 38:
+            if (tag != 'input' && tag != 'textarea') el.moveUp()
+          break;
+          case 40:
+            if (tag != 'input' && tag != 'textarea') el.moveDown()
+          break;
+          default: return;
+        }
+        e.preventDefault(); 
+      });
+    }
     return false;
     
   }
   
 }(window.jQuery);
-
 
