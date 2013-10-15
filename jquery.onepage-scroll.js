@@ -277,9 +277,15 @@
       $(document).keydown(function(e) {
         var tag = e.target.tagName.toLowerCase();
         switch(e.which) {
+		  // Page Up
+		  case 33:
+		  // Up arrow
           case 38:
             if (tag != 'input' && tag != 'textarea') el.moveUp()
           break;
+		  // Page Down
+		  case 34:
+		  // Down arrow
           case 40:
             if (tag != 'input' && tag != 'textarea') el.moveDown()
           break;
