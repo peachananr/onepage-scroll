@@ -113,8 +113,13 @@
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
       if(next.length < 1) {
-        pos = 0;
-        next = $(settings.sectionContainer + "[data-index='1']");
+        if (settings.loop == true) {
+          pos = 0;
+          next = $(settings.sectionContainer + "[data-index='1']");
+        } else {
+          return
+        }
+        
       }else {
         pos = (index * 100) * -1;
       }
@@ -143,8 +148,13 @@
       next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
       
       if(next.length < 1) {
-        pos = ((total - 1) * 100) * -1;
-        next = $(settings.sectionContainer + "[data-index='"+total+"']");
+        if (settings.loop == true) {
+          pos = ((total - 1) * 100) * -1;
+          next = $(settings.sectionContainer + "[data-index='"+total+"']");
+        }
+        else {
+          return
+        }
       }else {
         pos = ((next.data("index") - 1) * 100) * -1;
       }
