@@ -38,9 +38,9 @@ $(".main").onepage_scroll({
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
    beforeMove: function(index) {}, // This option accepts a callback function. The function will be called before the page moves.
    afterMove: function(index) {}, // This option accepts a callback function. The function will be called after the page moves.
-   loop: false // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
-   direction: 'vertical' // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
-   touchTarget: '.top-layer' // You can attach the touch events to another container, for example if using multiple z-index div's
+   loop: false, // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
+   direction: 'vertical', // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
+   touchTarget: '.top-layer', // You can attach the touch events to another container, for example if using multiple z-index div's
    onLoad: function(index) {} // This option accepts a callback function. The function will be called when onepage-scroll is loaded
 });
 ````
