@@ -12,7 +12,7 @@
  *
  * License: GPL v3
  *
- * Credit: Ken Frederick for the "direction", "touchTarget" and bower.json options
+ * Credit: Ken Frederick for the "direction", "touchTarget", bower.json and "onLoad" options
  * https://github.com/frederickk
  *
  * Credit: Jay Contonio for the moveTo method
@@ -36,6 +36,7 @@
     // additions
     direction: "vertical",
     touchTarget: null,
+    onLoad: null
   };
 
   /*------------------------------------------------*/
@@ -377,6 +378,8 @@
         e.preventDefault();
       });
     }
+
+    if (typeof settings.onLoad == 'function') settings.onLoad( $(settings.sectionContainer +".active").data("index") );
     return false;
 
   };
