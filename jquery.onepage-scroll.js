@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3
+ * jquery-onepage-scroll.js v1.3.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -10,40 +10,38 @@
  * Credit: Eike Send for the awesome swipe event
  * https://github.com/peachananr/onepage-scroll
  *
+ * License: GPL v3
+ *
  * Credit: Ken Frederick for the "direction", "touchTarget" and bower.json options
  * https://github.com/frederickk
  *
- * Credit: Jay Contonio for the moveToSlide method
+ * Credit: Jay Contonio for the moveTo method
  * https://github.com/jcontonio
- *
- * Credit: Benjamin Schmidt for the onBeforePageSwitch, onAfterPageSwitch, onPageJunp callbacks
- * https://github.com/bluefirex
  *
  * ========================================================== */
 
 !function($) {
-  
+
   var defaults = {
     sectionContainer: "section",
     easing: "ease",
-    animationTime: 1000,
+    animationTime: 750,
     pagination: true,
     updateURL: false,
+    keyboard: true,
+    beforeMove: null,
+    afterMove: null,
+    loop: false,
 
     // additions
     direction: "vertical",
     touchTarget: null,
-
-    // events
-    onBeforePageSwitch: null,
-    onAfterPageSwitch: null,
-    onPageJump: null
   };
-  
+
   /*------------------------------------------------*/
-  /*  Credit: Eike Send for the awesome swipe event */    
+  /*  Credit: Eike Send for the awesome swipe event */
   /*------------------------------------------------*/
-  
+
   $.fn.swipeEvents = function() {
       return this.each(function() {
 
@@ -61,7 +59,7 @@
           $this.bind('touchmove', touchmove);
         }
         event.preventDefault();
-      }
+      };
 
       function touchmove(event) {
         var touches = event.originalEvent.touches;
@@ -86,7 +84,7 @@
           }
         }
         event.preventDefault();
-      }
+      };
 
       });
     };
@@ -103,19 +101,19 @@
         lastAnimation = 0,
         quietPeriod = 300,
         paginationList = "";
-    
-    $.fn.transformPage = function(settings, pos) {
+
+    $.fn.transformPage = function(settings, pos, index) {
       $(this).css({
-        "-webkit-transform": ( settings.direction == 'horizontal' ) 
+        "-webkit-transform": ( settings.direction == 'horizontal' )
           ? "translate3d(" + pos + "%, 0, 0)"
           : "translate3d(0, " + pos + "%, 0)",
-        "-moz-transform": ( settings.direction == 'horizontal' ) 
+        "-moz-transform": ( settings.direction == 'horizontal' )
           ? "translate3d(" + pos + "%, 0, 0)"
           : "translate3d(0, " + pos + "%, 0)",
-        "-ms-transform": ( settings.direction == 'horizontal' ) 
+        "-ms-transform": ( settings.direction == 'horizontal' )
           ? "translate3d(" + pos + "%, 0, 0)"
           : "translate3d(0, " + pos + "%, 0)",
-        "transform": ( settings.direction == 'horizontal' ) 
+        "transform": ( settings.direction == 'horizontal' )
           ? "translate3d(" + pos + "%, 0, 0)"
           : "translate3d(0, " + pos + "%, 0)",
 
@@ -124,81 +122,91 @@
         "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
         "transition": "all " + settings.animationTime + "ms " + settings.easing
       });
+      $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+        if (typeof settings.afterMove == 'function') settings.afterMove(index);
+      });
     };
-    
+
     $.fn.moveDown = function(increment) {
       var el = $(this);
       increment = (increment != undefined) ? increment : 1;
       index = $(settings.sectionContainer +".active").data("index");
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index + increment) + "']");
 
-      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
-
-      if(index < total) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index + increment) + "']");
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active");
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index + increment) + "']").addClass("active");
-          }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + increment);
-            history.pushState( {}, document.title, href );
-          }
+      if(next.length < 1) {
+        if (settings.loop == true) {
+          pos = 0;
+          next = $(settings.sectionContainer + "[data-index='1']");
+        } else {
+          return
         }
+
+      }
+      else {
         // pos = (index * 100) * -1;
         pos = ((next.data("index") - 1) * 100) * -1;
-        el.transformPage(settings, pos);
-
-        if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index + 1);
       }
-    }
-    
+      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"));
+      current.removeClass("active")
+      next.addClass("active");
+      if(settings.pagination == true) {
+        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
+      }
+
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"))
+
+      if (history.replaceState && settings.updateURL == true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + increment);
+        history.pushState( {}, document.title, href );
+      }
+      el.transformPage(settings, pos, index);
+    };
+
     $.fn.moveUp = function(increment) {
       var el = $(this);
       increment = (increment != undefined) ? increment : 1;
       index = $(settings.sectionContainer +".active").data("index");
+      current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      next = $(settings.sectionContainer + "[data-index='" + (index - increment) + "']");
 
-      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
-
-      if(index <= total && index > 1) {
-        current = $(settings.sectionContainer + "[data-index='" + index + "']");
-        next = $(settings.sectionContainer + "[data-index='" + (index - increment) + "']");
-        if(next) {
-          current.removeClass("active")
-          next.addClass("active")
-          if(settings.pagination == true) {
-            $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-            $(".onepage-pagination li a" + "[data-index='" + (index - increment) + "']").addClass("active");
-          }
-          $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-          $("body").addClass("viewing-page-"+next.data("index"))
-          
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - increment);
-            history.pushState( {}, document.title, href );
-          }
+      if(next.length < 1) {
+        if (settings.loop == true) {
+          pos = ((total - 1) * 100) * -1;
+          next = $(settings.sectionContainer + "[data-index='"+total+"']");
         }
-        pos = ((next.data("index") - 1) * 100) * -1;
-        el.transformPage(settings, pos);
-
-        if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index - 1);
+        else {
+          return
+        }
       }
-    }
+      else {
+        pos = ((next.data("index") - 1) * 100) * -1;
+      }
+      if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
+      current.removeClass("active")
+      next.addClass("active")
+      if(settings.pagination == true) {
+        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
+      }
+      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      $("body").addClass("viewing-page-"+next.data("index"))
 
-    $.fn.moveToSlide = function(newIndex) { 
+      if (history.replaceState && settings.updateURL == true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - increment);
+        history.pushState( {}, document.title, href );
+      }
+      el.transformPage(settings, pos, index);
+    };
+
+    $.fn.moveTo = function(slideIndex) {
       var el = $(this);
       index = $(settings.sectionContainer +".active").data("index");
 
-      if (typeof settings.onBeforePageSwitch == 'function') settings.onBeforePageSwitch(index);
-
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + newIndex + "']");
+      next = $(settings.sectionContainer + "[data-index='" + slideIndex + "']");
       if (next) {
         current.removeClass("active");
         next.addClass("active");
@@ -207,10 +215,8 @@
       $("body").addClass("viewing-page-"+next.data("index"));
       pos = ((next.data("index") - 1) * 100) * -1;
       el.transformPage(settings, pos);
+    };
 
-      if (typeof settings.onAfterPageSwitch == 'function') settings.onAfterPageSwitch(index - 1);
-    }
-    
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
         var timeNow = new Date().getTime();
@@ -225,20 +231,12 @@
         } else {
           el.moveUp()
         }
-
-        // Broadcast current position 
-        // console.log('Current: ' + (parseInt($(settings.sectionContainer +".active").data("index")) - 1));
-        el.trigger('swiped', [(parseInt($(settings.sectionContainer +".active").data("index")) - 1)]);
+        // el.trigger('swiped', [(parseInt($(settings.sectionContainer +".active").data("index")) - 1)]);
         lastAnimation = timeNow;
-    }
-    
+    };
+
     // Prepare everything before binding wheel scroll
-    
     el.addClass("onepage-wrapper").css("position","relative");
-    el.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
-      // Broadcast we are done moving
-      el.trigger('animationComplete');
-    });
     $.each( sections, function(i) {
       $(this).css({
         position: "absolute",
@@ -259,38 +257,38 @@
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
       }
     });
-    
+
     if( settings.direction == 'horizontal' ) {
       if( settings.touchTarget != null ) {
-        $(settings.touchTarget).swipeEvents().bind("swipeRight", function(){ 
-          el.moveUp(); 
-        }).bind("swipeLeft", function(){ 
-          el.moveDown(); 
+        $(settings.touchTarget).swipeEvents().bind("swipeRight", function(){
+          el.moveUp();
+        }).bind("swipeLeft", function(){
+          el.moveDown();
         });
       }
 
-      el.swipeEvents().bind("swipeRight", function(){ 
-        el.moveUp(); 
-      }).bind("swipeLeft", function(){ 
-        el.moveDown(); 
+      el.swipeEvents().bind("swipeRight", function(){
+        el.moveUp();
+      }).bind("swipeLeft", function(){
+        el.moveDown();
       });
     }
     else {
       if( settings.touchTarget != null ) {
-        $(settings.touchTarget).swipeEvents().bind("swipeDown",  function(){ 
+        $(settings.touchTarget).swipeEvents().bind("swipeDown",  function(){
           el.moveUp();
-        }).bind("swipeUp", function(){ 
-          el.moveDown(); 
+        }).bind("swipeUp", function(){
+          el.moveDown();
         });
       }
 
-      el.swipeEvents().bind("swipeDown",  function(){ 
+      el.swipeEvents().bind("swipeDown",  function(){
         el.moveUp();
-      }).bind("swipeUp", function(){ 
-        el.moveDown(); 
+      }).bind("swipeUp", function(){
+        el.moveDown();
       });
     }
-    
+
     // Create Pagination and Display Them
     if(settings.pagination == true) {
       $("<ul class='onepage-pagination'>" + paginationList + "</ul>").prependTo("body");
@@ -303,13 +301,14 @@
         el.find(".onepage-pagination").css("margin-top", posTop);
       }
     }
-    
+
+    // Check URL for slide index
     if(window.location.hash != "" && window.location.hash != "#1") {
       init_index =  window.location.hash.replace("#", "")
       $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
       $("body").addClass("viewing-page-"+ init_index)
       if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
-      
+
       if (typeof settings.onPageJump == 'function') settings.onPageJump(0, init_index);
 
       next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
@@ -324,9 +323,10 @@
         }
       }
       pos = ((init_index - 1) * 100) * -1;
-      el.transformPage(settings, pos);
-      
-    }else{
+      el.transformPage(settings, pos, init_index);
+
+    }
+    else{
       $(settings.sectionContainer + "[data-index='1']").addClass("active")
       $("body").addClass("viewing-page-1")
       if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
@@ -349,22 +349,37 @@
             $("body").addClass("viewing-page-"+next.data("index"))
           }
           pos = ((page_index - 1) * 100) * -1;
-          el.transformPage(settings, pos);
+          el.transformPage(settings, pos, page_index);
         }
         if (settings.updateURL == false) return false;
       });
     }
-    
-    
-    
+
     $(document).bind('mousewheel DOMMouseScroll', function(event) {
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
+
+
+    if(settings.keyboard == true) {
+      $(document).keydown(function(e) {
+        var tag = e.target.tagName.toLowerCase();
+        switch(e.which) {
+          case 38:
+            if (tag != 'input' && tag != 'textarea') el.moveUp()
+          break;
+          case 40:
+            if (tag != 'input' && tag != 'textarea') el.moveDown()
+          break;
+          default: return;
+        }
+        e.preventDefault();
+      });
+    }
     return false;
-    
-  }
-  
+
+  };
+
 }(window.jQuery);
 
