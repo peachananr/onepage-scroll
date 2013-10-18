@@ -28,7 +28,7 @@ To add this to your website, simply include the latest jQuery library together w
 </body>
 ````
 Container "Main" must be one level below the `body` tag in order to make it work full page. Now call the function to activate as follows:
- 
+
 ````javascript
 $(".main").onepage_scroll({
    sectionContainer: "section", // sectionContainer accepts any kind of selector in case you don't want to use section
@@ -36,9 +36,12 @@ $(".main").onepage_scroll({
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
-   beforeMove: function(index) {}, // This option accepts a callback function. The function will be called before the page moves.
-   afterMove: function(index) {}, // This option accepts a callback function. The function will be called after the page moves.
-   loop: false // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
+   beforeMove: function(current_page_index[, next_page_index]) {}, // This option accepts a callback function. The function will be called before the page moves.
+   afterMove: function(current_page_index) {}, // This option accepts a callback function. The function will be called after the page moves.
+   loop: false, // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
+   direction: 'vertical', // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
+   touchTarget: '.top-layer', // You can attach the touch events to another container, for example if using multiple z-index div's
+   onLoad: function(current_page_index) {} // This option accepts a callback function. The function will be called when onepage-scroll is loaded
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
@@ -46,42 +49,66 @@ And that's it. Now, your website should work the same way Apple's iPhone 5S webs
 ## Public Methods
 You can also trigger page move programmatically as well:
 
-### $.fn.moveUp()
-This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down.
+### $.fn.moveUp(increment)
+This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down. The `increment` variable is an option which allows the moving of the page up by the given increment.
 
 ````javascript
   $(".main").moveUp();
 ````
 
-### $.fn.moveDown()
-This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up.
+### $.fn.moveDown(increment)
+This method allows you to move the page down by one. This action is equivalent to scrolling down/swiping up. The `increment` variable is an option which allows the moving of the page down by the given increment.
+
 
 ````javascript
   $(".main").moveDown();
 ````
 
+### $.fn.moveTo(slide_index)
+This method allows you to move to a chosen page index. The `slide_index` variable is the destination page index.
+
+
+````javascript
+  $(".main").moveTo(3);
+````
+
+
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(current_page_index[, next_page_index ])
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index) {
+    beforeMove: function(current_page_index) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index)
+### afterMove(current_page_index)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index) {
+    afterMove: function(current_page_index) {
       ...
     }
+  });
+````
+
+### onLoad(current_page_index)
+This callback gets called as soon as onepage-scroll is initially loaded
+
+````javascript
+  $(document).ready(function(){
+    $(".main").onepage_scroll({
+      sectionContainer: "section",
+      onLoad: function(current_page_index) {
+        // do something on load
+      }
+    });
   });
 ````
 
