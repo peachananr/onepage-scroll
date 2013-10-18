@@ -148,7 +148,7 @@
         // pos = (index * 100) * -1;
         pos = ((next.data("index") - 1) * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"));
+      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"),next.data("index") );
       current.removeClass("active")
       next.addClass("active");
       if(settings.pagination == true) {
@@ -185,7 +185,7 @@
       else {
         pos = ((next.data("index") - 1) * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
+      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"),next.data("index") );
       current.removeClass("active")
       next.addClass("active")
       if(settings.pagination == true) {

@@ -36,12 +36,12 @@ $(".main").onepage_scroll({
    animationTime: 1000, // AnimationTime let you define how long each section takes to animate
    pagination: true, // You can either show or hide the pagination. Toggle true for show, false for hide.
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
-   beforeMove: function(index) {}, // This option accepts a callback function. The function will be called before the page moves.
-   afterMove: function(index) {}, // This option accepts a callback function. The function will be called after the page moves.
+   beforeMove: function(current_page_index[, next_page_index]) {}, // This option accepts a callback function. The function will be called before the page moves.
+   afterMove: function(current_page_index) {}, // This option accepts a callback function. The function will be called after the page moves.
    loop: false, // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
    direction: 'vertical', // You can control the direction of scroll and order of sections to be "vertical" or "horizontal",
    touchTarget: '.top-layer', // You can attach the touch events to another container, for example if using multiple z-index div's
-   onLoad: function(index) {} // This option accepts a callback function. The function will be called when onepage-scroll is loaded
+   onLoad: function(current_page_index) {} // This option accepts a callback function. The function will be called when onepage-scroll is loaded
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
@@ -76,23 +76,23 @@ This method allows you to move to a chosen page index. The `slide_index` variabl
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(current_page_index[, next_page_index ])
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index) {
+    beforeMove: function(current_page_index) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index)
+### afterMove(current_page_index)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index) {
+    afterMove: function(current_page_index) {
       ...
     }
   });
