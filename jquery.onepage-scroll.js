@@ -42,7 +42,7 @@
           startY = touches[0].pageY;
           $this.bind('touchmove', touchmove);
         }
-        event.preventDefault();
+        // event.preventDefault();
       }
 
       function touchmove(event) {
@@ -86,16 +86,21 @@
         paginationList = "";
     
     $.fn.transformPage = function(settings, pos) {
-      $(this).css({
-        "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "transform": "translate3d(0, " + pos + "%, 0)", 
-        "transition": "all " + settings.animationTime + "ms " + settings.easing
-      });
+      var toppos = (el.height()/100) * pos;
+      if($('html').hasClass('ie8')) {
+        $(this).animate({top: toppos+'px'},settings.animationTime);
+      } else {
+        $(this).css({
+          "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
+          "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
+          "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
+          "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
+          "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
+          "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
+          "transform": "translate3d(0, " + pos + "%, 0)", 
+          "transition": "all " + settings.animationTime + "ms " + settings.easing
+        });
+      }
     }
     
     $.fn.moveDown = function() {
