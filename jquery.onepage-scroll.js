@@ -32,9 +32,10 @@
 
         var startX,
             startY,
-            $this = $(this);
+            $this = $(this); 
 
         $this.bind('touchstart', touchstart);
+        $this.bind('touchend', touchend);
 
         function touchstart(event) {
           var touches = event.originalEvent.touches;
@@ -47,20 +48,20 @@
 
         function touchmove(event) {
           var touches = event.originalEvent.touches;
-       
-          if (touches && touches.length) {
+       	
+          if (touches && touches.length && touches[0].pageX >1) {
             var deltaX = startX - touches[0].pageX;
             var deltaY = startY - touches[0].pageY;
-
+			if(deltaX == 0){}
             if (deltaX >= 80) {
               $this.trigger("swipeLeft");
-            }
+            }else
             if (deltaX <= -80) {
               $this.trigger("swipeRight");
-            }
+            } else
             if (deltaY >= 80) {
               $this.trigger("swipeUp");
-            }
+            }else
             if (deltaY <= -80) {
               $this.trigger("swipeDown");
             }
@@ -71,7 +72,11 @@
             
           }
           event.preventDefault();
-        }
+        };
+		
+        function touchend(event) {
+          $this.unbind('touchmove', touchmove);
+        };
 
       });
     };
