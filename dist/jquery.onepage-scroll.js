@@ -107,16 +107,47 @@
       });
     };
 
+    function updatePagination(index) {
+        paginationLinks
+          .removeClass("active")
+          .filter("[data-index='" + index + "']")
+          .addClass("active");
+    }
+
+    function updateBodyClass(index) {
+        bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        bodyElement.addClass("viewing-page-" + index);
+    }
+
+    function updateHash(index) {
+      if (window.history.replaceState && settings.updateURL === true) {
+        var href = window.location.href.substr(0, window.location.href.indexOf('#')) + "#" + index;
+        window.history.pushState({}, window.document.title, href);
+      }
+    }
+
+    function getCurrentIndex() {
+      return sections.filter(".active").data("index");
+    }
+
+    function getCurrent() {
+      return sections.filter(".active");
+    }
+
+    function getSection(index) {
+      return sections.filter("[data-index='" + index + "']");
+    }
+
     $.fn.moveTo = function (nextIndex) {
       var index, current, next, pos;
-      index = sections.filter(".active").data("index");
-      current = sections.filter("[data-index='" + index + "']");
+      index = getCurrentIndex();
+      current = getCurrent();
 
       if (settings.loop === true) {
         nextIndex = ((nextIndex - 1 + total) % total) + 1;
       }
 
-      next = sections.filter("[data-index='" + nextIndex + "']");
+      next = getSection(nextIndex);
 
       if (!next.length) {
         return;
@@ -127,20 +158,16 @@
       if (typeof settings.beforeMove === 'function') {
         settings.beforeMove(current.data("index"));
       }
+
       current.removeClass("active");
       next.addClass("active");
+
       if (settings.pagination === true) {
-        paginationLinks.filter("[data-index='" + index + "']").removeClass("active");
-        paginationLinks.filter("[data-index='" + nextIndex + "']").addClass("active");
+        updatePagination(nextIndex);
       }
 
-      bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      bodyElement.addClass("viewing-page-" + nextIndex);
-
-      if (window.history.replaceState && settings.updateURL === true) {
-        var href = window.location.href.substr(0, window.location.href.indexOf('#')) + "#" + nextIndex;
-        window.history.pushState({}, window.document.title, href);
-      }
+      updateBodyClass(index);
+      updateHash(index);
 
       el.transformPage(settings, pos, index);
     };
@@ -214,39 +241,26 @@
 
       var next = sections.filter("[data-index='" + (init_index) + "']");
       if (next) {
-        if (window.history.replaceState && settings.updateURL === true) {
-          var href = window.location.href.substr(0, window.location.href.indexOf('#')) + "#" + (init_index);
-          window.history.pushState({}, window.document.title, href);
-        }
+        updateHash(init_index);
       }
+
       el.moveTo(init_index);
 
     } else {
-      sections.filter("[data-index='1']").addClass("active");
-      bodyElement.addClass("viewing-page-1");
+      getSection(1).addClass("active");
+      updateBodyClass(1);
       if (settings.pagination === true) {
-        paginationLinks.filter("[data-index='1']").addClass("active");
+        updatePagination(1);
       }
     }
     if (settings.pagination === true) {
-      paginationLinks.click(function () {
+      paginationLinks.click(function (event) {
         var page_index = $(this).data("index");
         if (!$(this).hasClass("active")) {
-          var current, next;
-          current = sections.filter(".active");
-          next = sections.filter("[data-index='" + (page_index) + "']");
-          if (next) {
-            current.removeClass("active");
-            next.addClass("active");
-            paginationLinks.filter(".active").removeClass("active");
-            paginationLinks.filter("[data-index='" + (page_index) + "']").addClass("active");
-            bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-            bodyElement.addClass("viewing-page-" + next.data("index"));
-          }
           el.moveTo(page_index);
         }
         if (settings.updateURL === false) {
-          return false;
+          event.preventDefault();
         }
       });
     }
