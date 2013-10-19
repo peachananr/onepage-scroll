@@ -13,7 +13,6 @@
  * License: GPL v3
  *
  * ========================================================== */
-
 (function ($) {
   "use strict";
 
@@ -33,8 +32,8 @@
   /*  Credit: Eike Send for the awesome swipe event */
   /*------------------------------------------------*/
 
-  $.fn.swipeEvents = function() {
-    return this.each(function() {
+  $.fn.swipeEvents = function () {
+    return this.each(function () {
 
       var startX, startY, $this = $(this);
 
@@ -53,20 +52,21 @@
         if (touches && touches.length) {
           var deltaX = startX - touches[0].pageX;
           var deltaY = startY - touches[0].pageY;
+          var triggerOffset = 50;
 
-          if (deltaX >= 50) {
+          if (deltaX >= triggerOffset) {
             $this.trigger("swipeLeft");
           }
-          if (deltaX <= -50) {
+          if (deltaX <= -triggerOffset) {
             $this.trigger("swipeRight");
           }
-          if (deltaY >= 50) {
+          if (deltaY >= triggerOffset) {
             $this.trigger("swipeUp");
           }
-          if (deltaY <= -50) {
+          if (deltaY <= -triggerOffset) {
             $this.trigger("swipeDown");
           }
-          if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+          if (Math.abs(deltaX) >= triggerOffset || Math.abs(deltaY) >= triggerOffset) {
             $this.unbind('touchmove', touchmove);
           }
         }
@@ -78,19 +78,20 @@
     });
   };
 
-
-  $.fn.onepage_scroll = function(options){
+  $.fn.onepage_scroll = function (options) {
     var settings = $.extend({}, defaults, options),
         el = $(this),
         sections = $(settings.sectionContainer),
+        bodyElement = $('body'),
+        paginationLinks,
         total = sections.length,
         topPos = 0,
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
 
-    $.fn.transformPage = function(settings, pos, index) {
-      $(this).css({
+    $.fn.transformPage = function (settings, pos, index) {
+      el.css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)",
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
         "-moz-transform": "translate3d(0, " + pos + "%, 0)",
@@ -99,93 +100,70 @@
         "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
         "transform": "translate3d(0, " + pos + "%, 0)",
         "transition": "all " + settings.animationTime + "ms " + settings.easing
-      });
-      $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function() {
+      }).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
         if (typeof settings.afterMove === 'function') {
           settings.afterMove(index);
         }
       });
     };
 
-    $.fn.moveDown = function() {
-      var el, index, current, next, pos;
+    $.fn.move = function (direction) {
+      var el, index, current, next, pos, nextIndex;
       el = $(this);
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
-      if(next.length < 1) {
+      index = sections.filter(".active").data("index");
+      current = sections.filter("[data-index='" + index + "']");
+
+      if(direction === 'up') {
+        nextIndex = index - 1;
+      } else {
+        nextIndex = index + 1;
+      }
+
+      next = sections.filter("[data-index='" + nextIndex + "']");
+
+      if (next.length < 1) {
         if (settings.loop === true) {
-          pos = 0;
-          next = $(settings.sectionContainer + "[data-index='1']");
+          pos = ((total - 1) * 100) * -1;
+          next = sections.filter("[data-index='" + total + "']");
         } else {
           return;
         }
-
-      }else {
-        pos = (index * 100) * -1;
-      }
-      if (typeof settings.beforeMove === 'function') {
-        settings.beforeMove( current.data("index"));
-      }
-      current.removeClass("active");
-      next.addClass("active");
-      if(settings.pagination === true) {
-        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
-      }
-
-      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      $("body").addClass("viewing-page-"+next.data("index"));
-
-      if (window.history.replaceState && settings.updateURL === true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
-        window.history.pushState( {}, window.document.title, href );
-      }
-      el.transformPage(settings, pos, index);
-    };
-
-    $.fn.moveUp = function() {
-      var el, index, current, next, pos;
-      el = $(this);
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
-
-      if(next.length < 1) {
-        if (settings.loop === true) {
-          pos = ((total - 1) * 100) * -1;
-          next = $(settings.sectionContainer + "[data-index='"+total+"']");
-        }
-        else {
-          return;
-        }
-      }else {
-        pos = ((next.data("index") - 1) * 100) * -1;
+      } else {
+        pos = ((nextIndex - 1) * 100) * -1;
       }
       if (typeof settings.beforeMove === 'function') {
         settings.beforeMove(current.data("index"));
       }
       current.removeClass("active");
       next.addClass("active");
-      if(settings.pagination === true) {
-        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
+      if (settings.pagination === true) {
+        paginationLinks.filter("[data-index='" + index + "']").removeClass("active");
+        paginationLinks.filter("[data-index='" + nextIndex + "']").addClass("active");
       }
-      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      $("body").addClass("viewing-page-"+next.data("index"));
+
+      bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+      bodyElement.addClass("viewing-page-" + nextIndex);
 
       if (window.history.replaceState && settings.updateURL === true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
-        window.history.pushState( {}, window.document.title, href );
+        var href = window.location.href.substr(0, window.location.href.indexOf('#')) + "#" + nextIndex;
+        window.history.pushState({}, window.document.title, href);
       }
       el.transformPage(settings, pos, index);
+    };
+
+    $.fn.moveDown = function () {
+      $.fn.move('down');
+    };
+
+    $.fn.moveUp = function () {
+      $.fn.move('up');
     };
 
     function init_scroll(event, delta) {
       var deltaOfInterest = delta;
       var timeNow = new Date().getTime();
       // Cancel scroll if currently animating or within quiet period
-      if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
+      if (timeNow - lastAnimation < quietPeriod + settings.animationTime) {
         event.preventDefault();
         return;
       }
@@ -199,77 +177,77 @@
     }
 
     // Prepare everything before binding wheel scroll
-
-    el.addClass("onepage-wrapper").css("position","relative");
-    $.each( sections, function(i) {
+    el.addClass("onepage-wrapper").css("position", "relative");
+    $.each(sections, function (i) {
       $(this).css({
         position: "absolute",
         top: topPos + "%"
-      }).addClass("section").attr("data-index", i+1);
+      }).addClass("section").attr("data-index", i + 1);
       topPos = topPos + 100;
-      if(settings.pagination === true) {
-        paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>";
+      if (settings.pagination === true) {
+        paginationList += "<li><a data-index='" + (i + 1) + "' href='#" + (i + 1) + "'></a></li>";
       }
     });
 
-    el.swipeEvents().bind("swipeDown",  function(){
+    el.swipeEvents().bind("swipeDown", function () {
       el.moveUp();
-    }).bind("swipeUp", function(){
+    }).bind("swipeUp", function () {
       el.moveDown();
     });
 
     // Create Pagination and Display Them
-    if(settings.pagination === true) {
+    if (settings.pagination === true) {
       $("<ul class='onepage-pagination'>" + paginationList + "</ul>").prependTo("body");
       var posTop = (el.find(".onepage-pagination").height() / 2) * -1;
       el.find(".onepage-pagination").css("margin-top", posTop);
+      paginationLinks = $('.onepage-pagination li a');
     }
 
-    if(window.location.hash !== "" && window.location.hash !== "#1") {
-      var init_index =  window.location.hash.replace("#", "");
-      $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active");
-      $("body").addClass("viewing-page-"+ init_index);
-      if(settings.pagination === true) {
-        $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
+    if (window.location.hash !== "" && window.location.hash !== "#1") {
+      var init_index = window.location.hash.replace("#", "");
+      sections.filter("[data-index='" + init_index + "']").addClass("active");
+      bodyElement.addClass("viewing-page-" + init_index);
+      if (settings.pagination === true) {
+        paginationLinks.filter("[data-index='" + init_index + "']").addClass("active");
       }
 
-      var next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
-      if(next) {
+      var next = sections.filter("[data-index='" + (init_index) + "']");
+      if (next) {
         next.addClass("active");
-        if(settings.pagination === true) {
-          $(".onepage-pagination li a" + "[data-index='" + (init_index) + "']").addClass("active");
+        if (settings.pagination === true) {
+          paginationLinks.filter("[data-index='" + (init_index) + "']").addClass("active");
         }
-        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-        $("body").addClass("viewing-page-"+next.data("index"));
+        bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        bodyElement.addClass("viewing-page-" + next.data("index"));
         if (window.history.replaceState && settings.updateURL === true) {
-          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (init_index);
-          window.history.pushState( {}, window.document.title, href );
+          var href = window.location.href.substr(0, window.location.href.indexOf('#')) + "#" + (init_index);
+          window.history.pushState({}, window.document.title, href);
         }
       }
       var pos = ((init_index - 1) * 100) * -1;
       el.transformPage(settings, pos, init_index);
 
-    }else{
-      $(settings.sectionContainer + "[data-index='1']").addClass("active");
-      $("body").addClass("viewing-page-1");
-      if(settings.pagination === true) {
-        $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
+    } else {
+      sections.filter("[data-index='1']").addClass("active");
+      bodyElement.addClass("viewing-page-1");
+      if (settings.pagination === true) {
+        paginationLinks.filter("[data-index='1']").addClass("active");
       }
     }
-    if(settings.pagination === true)  {
-      $(".onepage-pagination li a").click(function (){
+    if (settings.pagination === true) {
+      paginationLinks.click(function () {
         var page_index = $(this).data("index");
         if (!$(this).hasClass("active")) {
           var current, next;
-          current = $(settings.sectionContainer + ".active");
-          next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
-          if(next) {
-            current.removeClass("active"),
-        next.addClass("active");
-      $(".onepage-pagination li a" + ".active").removeClass("active");
-      $(".onepage-pagination li a" + "[data-index='" + (page_index) + "']").addClass("active");
-      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      $("body").addClass("viewing-page-"+next.data("index"));
+          current = sections.filter(".active");
+          next = sections.filter("[data-index='" + (page_index) + "']");
+          if (next) {
+            current.removeClass("active");
+            next.addClass("active");
+            paginationLinks.filter(".active").removeClass("active");
+            paginationLinks.filter("[data-index='" + (page_index) + "']").addClass("active");
+            bodyElement[0].className = bodyElement[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+            bodyElement.addClass("viewing-page-" + next.data("index"));
           }
           pos = ((page_index - 1) * 100) * -1;
           el.transformPage(settings, pos, page_index);
@@ -282,27 +260,28 @@
 
 
 
-    $(window.document).bind('mousewheel DOMMouseScroll', function(event) {
+    $(window.document).bind('mousewheel DOMMouseScroll', function (event) {
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       init_scroll(event, delta);
     });
 
-    if(settings.keyboard === true) {
-      $(window.document).keydown(function(e) {
+    if (settings.keyboard === true) {
+      $(window.document).keydown(function (e) {
         var tag = e.target.tagName.toLowerCase();
-        switch(e.which) {
-          case 38:
-            if (tag !== 'input' && tag !== 'textarea') {
-              el.moveUp();
-            }
-            break;
-          case 40:
-            if (tag !== 'input' && tag !== 'textarea') {
-              el.moveDown();
-            }
-            break;
-          default: return;
+        switch (e.which) {
+        case 38:
+          if (tag !== 'input' && tag !== 'textarea') {
+            el.moveUp();
+          }
+          break;
+        case 40:
+          if (tag !== 'input' && tag !== 'textarea') {
+            el.moveDown();
+          }
+          break;
+        default:
+          return;
         }
         e.preventDefault();
       });
@@ -312,4 +291,3 @@
   };
 
 })(jQuery);
-
