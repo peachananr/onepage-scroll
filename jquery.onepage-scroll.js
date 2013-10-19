@@ -36,6 +36,10 @@
       $this.bind('touchstart', touchstart);
 
       function touchstart(event) {
+        if (event.target.tagName == 'A') {
+          location.href = event.target.href;
+          return false;
+        }
         var touches = event.originalEvent.touches;
         if (touches && touches.length) {
           startX = touches[0].pageX;
