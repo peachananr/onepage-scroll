@@ -60,26 +60,33 @@ This method allows you to move the page down by one. This action is equivalent t
   $(".main").moveDown();
 ````
 
+### $.fn.moveTo(index)
+This method allows you to move the page to page `index`.
+
+````javascript
+  $(".main").moveTo(index);
+````
+
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(old_page_index, new_page_index)
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index) {
+    beforeMove: function(old_page_index, new_page_index) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index)
+### afterMove(old_page_index, new_page_index)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index) {
+    afterMove: function(old_page_index, new_page_index) {
       ...
     }
   });
