@@ -301,7 +301,8 @@
         e.preventDefault();
       });
     }
-    return false;
+
+    return this;
 
   };
 
