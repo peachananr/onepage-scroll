@@ -161,6 +161,11 @@
       var index, current, next, pos;
       index = getCurrentIndex();
 
+      // if index egals nextIndex then no need to do anything !
+      if(index === nextIndex) {
+        return;
+      }
+
       if (settings.loop === true) {
         nextIndex = ((nextIndex - 1 + total) % total) + 1;
       }
