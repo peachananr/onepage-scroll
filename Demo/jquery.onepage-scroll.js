@@ -107,72 +107,78 @@
       });
     }
     
-    $.fn.moveDown = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
-      if(next.length < 1) {
-        if (settings.loop == true) {
-          pos = 0;
-          next = $(settings.sectionContainer + "[data-index='1']");
-        } else {
-          return
+    $.fn.moveDown = function(amount) {
+      amount = typeof amount !== "undefined" ? amount : 1;
+      for (var i=0;i<amount;i++) {
+        var el = $(this)
+        index = $(settings.sectionContainer +".active").data("index");
+        current = $(settings.sectionContainer + "[data-index='" + index + "']");
+        next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+        if(next.length < 1) {
+          if (settings.loop == true) {
+            pos = 0;
+            next = $(settings.sectionContainer + "[data-index='1']");
+          } else {
+            return
+          }
+          
+        }else {
+          pos = (index * 100) * -1;
+        }
+        if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"));
+        current.removeClass("active")
+        next.addClass("active");
+        if(settings.pagination == true) {
+          $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+          $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
         }
         
-      }else {
-        pos = (index * 100) * -1;
+        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        $("body").addClass("viewing-page-"+next.data("index"))
+        
+        if (history.replaceState && settings.updateURL == true) {
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+          history.pushState( {}, document.title, href );
+        }   
+        el.transformPage(settings, pos, index);
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove( current.data("index"));
-      current.removeClass("active")
-      next.addClass("active");
-      if(settings.pagination == true) {
-        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
-      }
-      
-      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      $("body").addClass("viewing-page-"+next.data("index"))
-      
-      if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
-        history.pushState( {}, document.title, href );
-      }   
-      el.transformPage(settings, pos, index);
     }
     
-    $.fn.moveUp = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
-      
-      if(next.length < 1) {
-        if (settings.loop == true) {
-          pos = ((total - 1) * 100) * -1;
-          next = $(settings.sectionContainer + "[data-index='"+total+"']");
+    $.fn.moveUp = function(amount) {
+      amount = typeof amount !== "undefined" ? amount : 1;
+      for (var i=0;i<amount;i++) {
+        var el = $(this)
+        index = $(settings.sectionContainer +".active").data("index");
+        current = $(settings.sectionContainer + "[data-index='" + index + "']");
+        next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
+        
+        if(next.length < 1) {
+          if (settings.loop == true) {
+            pos = ((total - 1) * 100) * -1;
+            next = $(settings.sectionContainer + "[data-index='"+total+"']");
+          }
+          else {
+            return
+          }
+        }else {
+          pos = ((next.data("index") - 1) * 100) * -1;
         }
-        else {
-          return
+        if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
+        current.removeClass("active")
+        next.addClass("active")
+        if(settings.pagination == true) {
+          $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
+          $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
         }
-      }else {
-        pos = ((next.data("index") - 1) * 100) * -1;
+        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        $("body").addClass("viewing-page-"+next.data("index"))
+        
+        if (history.replaceState && settings.updateURL == true) {
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+          history.pushState( {}, document.title, href );
+        }
+        el.transformPage(settings, pos, index);
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
-      current.removeClass("active")
-      next.addClass("active")
-      if(settings.pagination == true) {
-        $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
-        $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
-      }
-      $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
-      $("body").addClass("viewing-page-"+next.data("index"))
-      
-      if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
-        history.pushState( {}, document.title, href );
-      }
-      el.transformPage(settings, pos, index);
     }
     
     function init_scroll(event, delta) {
