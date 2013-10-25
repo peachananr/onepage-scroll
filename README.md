@@ -28,7 +28,7 @@ To add this to your website, simply include the latest jQuery library together w
 </body>
 ````
 Container "Main" must be one level below the `body` tag in order to make it work full page. Now call the function to activate as follows:
- 
+
 ````javascript
 $(".main").onepage_scroll({
    sectionContainer: "section", // sectionContainer accepts any kind of selector in case you don't want to use section
@@ -38,7 +38,10 @@ $(".main").onepage_scroll({
    updateURL: false, // Toggle this true if you want the URL to be updated automatically when the user scroll to each page.
    beforeMove: function(index) {}, // This option accepts a callback function. The function will be called before the page moves.
    afterMove: function(index) {}, // This option accepts a callback function. The function will be called after the page moves.
-   loop: false // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
+   loop: false, // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
+   touchEnabled: false, // enable or disable swipe trigger
+   mousewheelEnabled: false, // enable or disable mousewheel support
+   keyboard: true // enable or disable keyboard nav
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
@@ -60,26 +63,33 @@ This method allows you to move the page down by one. This action is equivalent t
   $(".main").moveDown();
 ````
 
+### $.fn.moveTo(index)
+This method allows you to move the page to page `index`.
+
+````javascript
+  $(".main").moveTo(index);
+````
+
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(old_page_index, new_page_index)
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index) {
+    beforeMove: function(old_page_index, new_page_index) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index)
+### afterMove(old_page_index, new_page_index)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index) {
+    afterMove: function(old_page_index, new_page_index) {
       ...
     }
   });
