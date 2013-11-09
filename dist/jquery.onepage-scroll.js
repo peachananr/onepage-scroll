@@ -283,7 +283,7 @@
     }
 
     if (settings.mousewheelEnabled === true) {
-      $(window.document).bind('mousewheel DOMMouseScroll', function (event) {
+      el.bind('mousewheel DOMMouseScroll', function (event) {
         event.preventDefault();
         var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
         init_scroll(event, delta);

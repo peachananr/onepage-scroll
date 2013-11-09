@@ -54,11 +54,8 @@ module.exports = function(grunt) {
           jQuery: true
         }
       },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
       lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+        src: ['app/scripts/*.js']
       }
     },
     watch: {
