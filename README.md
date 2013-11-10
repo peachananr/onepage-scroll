@@ -8,7 +8,10 @@ Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](ht
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
+Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. IE 9+.
+
+## Depedencies
+One Page Scroll require modernizr to detect css transition support
 
 ## Basic Usage
 One Page Scroll let you transform your website into a one page scroll website that allows users to scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
