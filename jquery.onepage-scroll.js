@@ -307,6 +307,7 @@
             $("body").addClass("viewing-page-"+next.data("index"))
           }
           pos = ((page_index - 1) * 100) * -1;
+          if (typeof settings.beforeMove == 'function') settings.beforeMove(page_index);
           el.transformPage(settings, pos, page_index);
         }
         if (settings.updateURL == false) return false;
