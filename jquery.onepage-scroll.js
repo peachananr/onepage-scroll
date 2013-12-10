@@ -89,7 +89,12 @@
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
-    
+
+    // The 'modulus' operator in JavaScript is a remainder operator, not a modulus operator
+    function mod(m, n) {
+      return ((m % n) + n) % n;
+    }
+
     $.fn.transformPage = function(settings, pos, index) {
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
@@ -109,16 +114,17 @@
     $.fn.moveDown = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
+      next_index = index + 1;
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
       if(next.length < 1) {
         if (settings.loop == true) {
           pos = 0;
           next = $(settings.sectionContainer + "[data-index='1']");
+          next_index = mod((index - 1) + 1, total) + 1;
         } else {
           return
         }
-        
       }else {
         pos = (index * 100) * -1;
       }
@@ -137,12 +143,13 @@
         var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
         history.pushState( {}, document.title, href );
       }   
-      el.transformPage(settings, pos, index);
+      el.transformPage(settings, pos, next_index);
     }
     
     $.fn.moveUp = function() {
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
+      next_index = index - 1;
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
       
@@ -150,6 +157,7 @@
         if (settings.loop == true) {
           pos = ((total - 1) * 100) * -1;
           next = $(settings.sectionContainer + "[data-index='"+total+"']");
+          next_index = mod((index - 1) - 1, total) + 1;
         }
         else {
           return
@@ -171,7 +179,7 @@
         var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
         history.pushState( {}, document.title, href );
       }
-      el.transformPage(settings, pos, index);
+      el.transformPage(settings, pos, next_index);
     }
     
     $.fn.moveTo = function(page_index) {
