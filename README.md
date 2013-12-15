@@ -71,23 +71,23 @@ This method allows you to move to the specified page index programatically.
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(currentIndex, nextIndex)
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index) {
+    beforeMove: function(currentIndex, nextIndex) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index)
+### afterMove(newIndex, previousIndex)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index) {
+    afterMove: function(newIndex, previousIndex) {
       ...
     }
   });
