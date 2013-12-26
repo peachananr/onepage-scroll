@@ -19,10 +19,12 @@ To add this to your website, simply include the latest jQuery library together w
 ````html
 <body>
   ...
-  <div class="main">
-    <section>...</section>
-    <section>...</section>
-    ...
+  <div class="onepage-wrapper">
+    <div class="main">
+      <section>...</section>
+      <section>...</section>
+      ...
+    </div>
   </div>
   ...
 </body>
