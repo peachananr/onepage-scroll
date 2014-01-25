@@ -27,13 +27,13 @@
     afterMove: null,
     loop: false,
     responsiveFallback: false
-	};
-	
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
-	/*------------------------------------------------*/
-	
-	$.fn.swipeEvents = function() {
+  };
+  
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */    
+  /*------------------------------------------------*/
+  
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -77,7 +77,7 @@
 
       });
     };
-	
+  
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -178,7 +178,6 @@
       current = $(settings.sectionContainer + ".active")
       next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
       if(next.length > 0) {
-        if (typeof settings.beforeMove == 'function') settings.beforeMove(current.data("index"));
         current.removeClass("active")
         next.addClass("active")
         $(".onepage-pagination li a" + ".active").removeClass("active");
@@ -332,14 +331,24 @@
     if(settings.keyboard == true) {
       $(document).keydown(function(e) {
         var tag = e.target.tagName.toLowerCase();
-        
+
         if (!$("body").hasClass("disabled-onepage-scroll")) {
           switch(e.which) {
+            // up arrow
             case 38:
               if (tag != 'input' && tag != 'textarea') el.moveUp()
             break;
+            // down arrow
             case 40:
               if (tag != 'input' && tag != 'textarea') el.moveDown()
+            break;
+            // page up
+            case 33:
+              if (tag != 'input' && tag != 'textarea') el.moveUp();
+            break;
+            // page down
+            case 34:
+              if (tag != 'input' && tag != 'textarea') el.moveDown();
             break;
             default: return;
           }
