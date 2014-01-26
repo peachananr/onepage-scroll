@@ -336,7 +336,6 @@
           }
         }
         
-        e.preventDefault(); 
       });
     }
     return false;
