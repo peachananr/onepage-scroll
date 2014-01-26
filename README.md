@@ -6,6 +6,14 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 
 [![One Page Scroll](http://www.thepetedesign.com/images/onepage_scroll_image.png "One Page Scroll")](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
+## Requirement
+
+jQuery (1.9.0 or later)
+
+note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3 and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
+
+see: http://jsfiddle.net/33WJx/
+
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
