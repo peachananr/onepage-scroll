@@ -91,6 +91,7 @@
         paginationList = "";
     
     $.fn.transformPage = function(settings, pos, index) {
+      if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
