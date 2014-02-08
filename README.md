@@ -85,7 +85,7 @@ This method allows you to move to the specified page index programatically.
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(current_page_index)
+### beforeMove(next_page_index)
 This callback gets called before the plugin performs its move.
 
 ````javascript
