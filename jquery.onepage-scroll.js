@@ -47,11 +47,12 @@
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
-            $this.bind('touchmove', touchmove);
+            $this.off('touchmove').on('touchmove', touchmove);
           }
         }
 
         function touchmove(event) {
+          event.preventDefault();
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
             var deltaX = startX - touches[0].pageX;
@@ -70,7 +71,7 @@
               $this.trigger("swipeDown");
             }
             if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              $this.unbind('touchmove', touchmove);
+              $this.off('touchmove', touchmove);
             }
           }
         }
