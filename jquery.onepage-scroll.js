@@ -12,8 +12,13 @@
  * 
  * License: GPL v3
  *
- * Changes have been made. See PR 107 and comments below.
- * https://github.com/peachananr/onepage-scroll/pull/107/
+ * Changes have been made. 
+ * 
+ * NEW: Avoid multiple touchmove events
+ * NEW: Prevent default event (had issues on mobile)
+ * NEW: Use jQuery off() to remove the touchmove event
+ * NEW: Removed history management in moveTo function
+ * NEW: Manage back/forward in browser history
  *
  * ========================================================== */
 
@@ -51,18 +56,16 @@
             startX = touches[0].pageX;
             startY = touches[0].pageY;
 
-            // BEGIN PR 107
-            // see: https://github.com/peachananr/onepage-scroll/pull/107/
+            // BEGIN Avoid multiple touchmove events
             $this.off('touchmove').on('touchmove', touchmove);
-            // END PR 107
+            // END Avoid multiple touchmove events
           }
         }
 
         function touchmove(event) {
-          // BEGIN PR 107
-          // see: https://github.com/peachananr/onepage-scroll/pull/107/
+          // BEGIN Prevent default event (had issues on mobile)
           event.preventDefault();
-          // END PR 107
+          // END Prevent default event (had issues on mobile)
 
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
@@ -82,10 +85,9 @@
               $this.trigger("swipeDown");
             }
             if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              // BEGIN PR 107
-              // see: https://github.com/peachananr/onepage-scroll/pull/107/
+              // BEGIN Use jQuery off() to remove the touchmove event
               $this.off('touchmove', touchmove);
-              // END PR 107
+              // END Use jQuery off() to remove the touchmove event
             }
           }
         }
@@ -203,10 +205,8 @@
         
         pos = ((page_index - 1) * 100) * -1;
         
-        if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
-            history.pushState( {}, document.title, href );
-        }
+        // Removed the history management here due to a bug
+
         el.transformPage(settings, pos, page_index);
       }
     }
@@ -352,6 +352,22 @@
         
       });
     }
+
+    // START Manage back/forward in browser history
+    $(window).on('hashchange', function(e) {
+      if (e && e.originalEvent && e.originalEvent.newURL) {
+        var newURL = e.originalEvent.newURL;
+        var pos = newURL.indexOf('#');
+        var page = 1;
+        if (pos >= 0) {
+          page = newURL.substring(pos+1);
+        }
+
+        $(this).moveTo(page);
+      }
+    });
+    // END Manage back/forward in browser history
+
     return false;
   }
   
