@@ -12,6 +12,9 @@
  * 
  * License: GPL v3
  *
+ * Changes have been made. See PR 107 and comments below.
+ * https://github.com/peachananr/onepage-scroll/pull/107/
+ *
  * ========================================================== */
 
 !function($){
@@ -27,13 +30,13 @@
     afterMove: null,
     loop: false,
     responsiveFallback: false
-	};
-	
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
-	/*------------------------------------------------*/
-	
-	$.fn.swipeEvents = function() {
+  };
+  
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */    
+  /*------------------------------------------------*/
+  
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -47,12 +50,20 @@
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
+
+            // BEGIN PR 107
+            // see: https://github.com/peachananr/onepage-scroll/pull/107/
             $this.off('touchmove').on('touchmove', touchmove);
+            // END PR 107
           }
         }
 
         function touchmove(event) {
+          // BEGIN PR 107
+          // see: https://github.com/peachananr/onepage-scroll/pull/107/
           event.preventDefault();
+          // END PR 107
+
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
             var deltaX = startX - touches[0].pageX;
@@ -71,14 +82,16 @@
               $this.trigger("swipeDown");
             }
             if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+              // BEGIN PR 107
+              // see: https://github.com/peachananr/onepage-scroll/pull/107/
               $this.off('touchmove', touchmove);
+              // END PR 107
             }
           }
         }
-
       });
     };
-	
+  
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -344,4 +357,3 @@
   
   
 }(window.jQuery);
-
