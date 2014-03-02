@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.2
+ * jquery-onepage-scroll.js v1.2.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -94,13 +94,13 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
+        "-webkit-transition": "-webkit-transform " + settings.animationTime + "ms " + settings.easing,
         "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
+        "-moz-transition": "-moz-transform " + settings.animationTime + "ms " + settings.easing,
         "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
-        "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
+        "-ms-transition": "-ms-transform " + settings.animationTime + "ms " + settings.easing,
         "transform": "translate3d(0, " + pos + "%, 0)", 
-        "transition": "all " + settings.animationTime + "ms " + settings.easing
+        "transition": "transform " + settings.animationTime + "ms " + settings.easing
       });
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
         if (typeof settings.afterMove == 'function') settings.afterMove(index);
@@ -227,8 +227,8 @@
     
     
     function init_scroll(event, delta) {
-        deltaOfInterest = delta;
-        var timeNow = new Date().getTime();
+        var deltaOfInterest = delta,
+            timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
         if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
             event.preventDefault();
@@ -247,10 +247,7 @@
     
     el.addClass("onepage-wrapper").css("position","relative");
     $.each( sections, function(i) {
-      $(this).css({
-        position: "absolute",
-        top: topPos + "%"
-      }).addClass("section").attr("data-index", i+1);
+      $(this).addClass("ops-section").attr("data-index", i+1);
       topPos = topPos + 100;
       if(settings.pagination == true) {
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
