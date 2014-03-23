@@ -90,8 +90,8 @@
         quietPeriod = 500,
         paginationList = "";
     
-    $.fn.transformPage = function(settings, pos, index) {
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
+    $.fn.transformPage = function(settings, pos, index, next_el) {
+      if (typeof settings.beforeMove == 'function') settings.beforeMove(index, next_el);
       $(this).css({
         "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
         "-webkit-transition": "-webkit-transform " + settings.animationTime + "ms " + settings.easing,
@@ -103,7 +103,7 @@
         "transition": "transform " + settings.animationTime + "ms " + settings.easing
       });
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-        if (typeof settings.afterMove == 'function') settings.afterMove(index);
+        if (typeof settings.afterMove == 'function') settings.afterMove(index, next_el);
       });
     }
     
@@ -123,7 +123,6 @@
       }else {
         pos = (index * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove( next.data("index"));
       current.removeClass("active")
       next.addClass("active");
       if(settings.pagination == true) {
@@ -138,7 +137,7 @@
         var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
         history.pushState( {}, document.title, href );
       }   
-      el.transformPage(settings, pos, next.data("index"));
+      el.transformPage(settings, pos, next.data("index"), next);
     }
     
     $.fn.moveUp = function() {
@@ -158,7 +157,6 @@
       }else {
         pos = ((next.data("index") - 1) * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
       current.removeClass("active")
       next.addClass("active")
       if(settings.pagination == true) {
@@ -172,14 +170,13 @@
         var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
         history.pushState( {}, document.title, href );
       }
-      el.transformPage(settings, pos, next.data("index"));
+      el.transformPage(settings, pos, next.data("index"), next);
     }
     
     $.fn.moveTo = function(page_index) {
       current = $(settings.sectionContainer + ".active")
       next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
       if(next.length > 0) {
-        if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
         current.removeClass("active")
         next.addClass("active")
         $(".onepage-pagination li a" + ".active").removeClass("active");
@@ -193,7 +190,7 @@
             var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
             history.pushState( {}, document.title, href );
         }
-        el.transformPage(settings, pos, page_index);
+        el.transformPage(settings, pos, page_index, next);
       }
     }
     
