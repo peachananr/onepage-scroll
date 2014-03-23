@@ -77,7 +77,13 @@
 
       });
     };
-	
+
+  function getAndroidVersion() {
+    var match = navigator.userAgent.match(/Android\s([0-9\.]*)/);
+    return match ? match[1] : false;
+  };
+
+  var fixTransformPercentage = getAndroidVersion();
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -89,11 +95,19 @@
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
-    
+
+    $(window).resize(function(){
+      if (fixTransformPercentage)
+        el.css({
+          "-webkit-transform": "translate3d(0, " + ((el.data("onepage_scroll_pos")/100) * el.height()) + "px, 0)",
+          "-webkit-transition": "",
+        });
+    });
+
     $.fn.transformPage = function(settings, pos, index, next_el) {
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index, next_el);
       $(this).css({
-        "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-webkit-transform": "translate3d(0, " + (!fixTransformPercentage ? pos + "%" : ((pos/100) * $(this).height()) + "px") + ", 0)",
         "-webkit-transition": "-webkit-transform " + settings.animationTime + "ms " + settings.easing,
         "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
         "-moz-transition": "-moz-transform " + settings.animationTime + "ms " + settings.easing,
@@ -102,6 +116,7 @@
         "transform": "translate3d(0, " + pos + "%, 0)", 
         "transition": "transform " + settings.animationTime + "ms " + settings.easing
       });
+      $(this).data("onepage_scroll_pos", pos);
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
         if (typeof settings.afterMove == 'function') settings.afterMove(index, next_el);
       });
