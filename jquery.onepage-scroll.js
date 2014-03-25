@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.2.1
+ * jquery-onepage-scroll.js v1.3.0
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -8,7 +8,7 @@
  * one page at a time
  *
  * Credit: Eike Send for the awesome swipe event
- * https://github.com/peachananr/onepage-scroll
+ * https://github.com/leftstick/onepage-scroll
  * 
  * License: GPL v3
  *
