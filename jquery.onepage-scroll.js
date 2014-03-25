@@ -27,13 +27,13 @@
     afterMove: null,
     loop: false,
     responsiveFallback: false
-	};
-	
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */    
-	/*------------------------------------------------*/
-	
-	$.fn.swipeEvents = function() {
+  };
+  
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */    
+  /*------------------------------------------------*/
+  
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -77,7 +77,7 @@
 
       });
     };
-	
+  
 
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
@@ -241,6 +241,9 @@
     }
     
     // Prepare everything before binding wheel scroll
+
+    $('html').css('overflow', 'hidden').css('height', '100%');
+    $('body').css('overflow', 'hidden').css('height', '100%');
     
     el.addClass("onepage-wrapper").css("position","relative");
     $.each( sections, function(i) {
@@ -266,7 +269,7 @@
       el.find(".onepage-pagination").css("margin-top", posTop);
     }
     
-    if(window.location.hash != "" && window.location.hash != "#1" && $(settings.sectionContainer + "[data-index='" + window.location.hash.replace("#", "") + "']").length > 0) {
+    if(window.location.hash != "" && window.location.hash != "#1" &&$(settings.sectionContainer + "[data-index='" + window.location.hash.replace("#", "") + "']").length >0) {
       init_index =  window.location.hash.replace("#", "")
       $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
       $("body").addClass("viewing-page-"+ init_index)
@@ -333,7 +336,36 @@
       });
     }
     return false;
-  }
+  };
+
+  $.fn.disable_onepage_scroll = function(options){
+      var settings = $.extend({}, defaults, options);
+      var el = $(this);
+      var sections = $(settings.sectionContainer);
+
+       $('html').css('overflow', '').css('height', '');
+       $('body').css('overflow', '').css('height', '');
+
+      el.removeClass("onepage-wrapper");
+      $.each( sections, function(i) {
+          $(this).removeClass("ops-section active").removeAttr("data-index");
+      });
+
+      el.swipeEvents().unbind("swipeDown").unbind("swipeUp");
+      $("body").removeClass("disabled-onepage-scroll");
+      $('.onepage-pagination li a').unbind('click');
+      $('ul.onepage-pagination').remove();
+
+      var classListOnBody = $('body').attr('class').split(/\s+/);
+      $.each(classListOnBody, function(index, item){
+           if(item.indexOf('viewing-page-') >= 0){
+             $('body').removeClass(item);
+           }
+      });
+
+      $(document).unbind('mousewheel DOMMouseScroll');
+      $(document).unbind('keydown');
+  };
   
   
 }(window.jQuery);
