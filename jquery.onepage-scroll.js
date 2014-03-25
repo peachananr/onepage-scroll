@@ -266,7 +266,7 @@
       el.find(".onepage-pagination").css("margin-top", posTop);
     }
     
-    if(window.location.hash != "" && window.location.hash != "#1") {
+    if(window.location.hash != "" && window.location.hash != "#1" && $(settings.sectionContainer + "[data-index='" + window.location.hash.replace("#", "") + "']").length > 0) {
       init_index =  window.location.hash.replace("#", "")
       $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
       $("body").addClass("viewing-page-"+ init_index)
