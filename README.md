@@ -10,7 +10,7 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 
 jQuery (1.9.0 or later)
 
-note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3 and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
+note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3(or greater than 2.1.0) and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
 
 see: http://jsfiddle.net/33WJx/
 
@@ -60,6 +60,14 @@ And that's it. Now, your website should work the same way Apple's iPhone 5S webs
 
 ## Public Methods
 You can also trigger page move programmatically as well:
+
+### $.fn.disable_onepage_scroll()
+This method allows you to onload the `onepage-scroll` functionality.
+
+````javascript
+  $(".main").disable_onepage_scroll(options);
+````
+>Note: Only `sectionContainer` is required in options.
 
 ### $.fn.moveUp()
 This method allows you to move the page up by one. This action is equivalent to scrolling up/swiping down.
