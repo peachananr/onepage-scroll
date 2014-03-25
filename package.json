@@ -1,20 +1,21 @@
 {
-    "name": "onepage-scroller",
-    "version": "1.3.0",
-    "description": "Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll ",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/leftstick/onepage-scroll.git"
-    },
-    "author": "Howard.zuo",
-    "license": "Attribution-ShareAlike 4.0 International",
-    "bugs": {
-        "url": "https://github.com/leftstick/onepage-scroll/issues"
-    },
-    "homepage": "https://github.com/leftstick/onepage-scroll",
-    "devDependencies": {
-        "gulp": "~3.5.5",
-        "gulp-rename": "~1.2.0",
-        "gulp-uglify": "~0.2.1"
-    }
+  "name": "onepage-scroller",
+  "version": "1.3.0",
+  "description": "Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll ",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/leftstick/onepage-scroll.git"
+  },
+  "author": "Howard.zuo",
+  "license": "Attribution-ShareAlike 4.0 International",
+  "bugs": {
+    "url": "https://github.com/leftstick/onepage-scroll/issues"
+  },
+  "homepage": "https://github.com/leftstick/onepage-scroll",
+  "devDependencies": {
+    "gulp": "~3.5.5",
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~0.2.1",
+    "gulp-minify-css": "~0.3.0"
+  }
 }
