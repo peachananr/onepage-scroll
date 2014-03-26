@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.1
+ * jquery-onepage-scroll.js v1.3.2
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -364,6 +364,7 @@
       });
 
       $(document).unbind('mousewheel DOMMouseScroll');
+      $(window).unbind('resize');
       $(document).unbind('keydown');
   };
   
