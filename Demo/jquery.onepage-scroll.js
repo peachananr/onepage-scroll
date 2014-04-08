@@ -326,7 +326,13 @@
             case 38:
               if (tag != 'input' && tag != 'textarea') el.moveUp()
             break;
+            case 33:
+              if (tag != 'input' && tag != 'textarea') el.moveUp()
+            break;
             case 40:
+              if (tag != 'input' && tag != 'textarea') el.moveDown()
+            break;
+            case 34:
               if (tag != 'input' && tag != 'textarea') el.moveDown()
             break;
             default: return;
