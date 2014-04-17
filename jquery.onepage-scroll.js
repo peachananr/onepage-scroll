@@ -195,7 +195,27 @@
     }
     
     function responsive() {
-      if ($(window).width() < settings.responsiveFallback) {
+    	//start modification
+    	var valForTest = false;
+    	var typeOfRF = typeof settings.responsiveFallback
+    	
+    	if(typeOfRF == "number"){
+    		valForTest = $(window).width() < settings.responsiveFallback;
+    	}
+    	if(typeOfRF == "boolean"){
+    		valForTest = settings.responsiveFallback;
+    	}
+    	if(typeOfRF == "function"){
+    		valFunction = settings.responsiveFallback();
+    		valForTest = valFunction;
+    		typeOFv = typeof valForTest;
+    		if(typeOFv == "number"){
+    			valForTest = $(window).width() < valFunction;
+    		}
+    	}
+    	//end modification 
+
+      if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
         $(document).unbind('mousewheel DOMMouseScroll');
         el.swipeEvents().unbind("swipeDown swipeUp");
