@@ -51,9 +51,10 @@ $(".main").onepage_scroll({
    afterMove: function(index) {},   // This option accepts a callback function. The function will be called after the page moves.
    loop: false,                     // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
    keyboard: true,                  // You can activate the keyboard controls
-   responsiveFallback: false        // You can fallback to normal page scroll by defining the width of the browser in which
+   responsiveFallback: false,        // You can fallback to normal page scroll by defining the width of the browser in which
                                     // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
                                     // the browser's width is less than 600, the fallback will kick in.
+   disableMouseMove: false          // You can have the mouse wheel functionality disabled by setting this attribute to true. The default value is false.
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
