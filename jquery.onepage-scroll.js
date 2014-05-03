@@ -260,10 +260,12 @@
     });
     
     // Create Pagination and Display Them
-    if(settings.pagination == true) {
-      $("<ul class='onepage-pagination'>" + paginationList + "</ul>").prependTo("body");
+    if (settings.pagination == true) {
+      if ($('ul.onepage-pagination').size() < 1)
+        $("<ul class='onepage-pagination'></ul>").prependTo("body");
       posTop = (el.find(".onepage-pagination").height() / 2) * -1;
       el.find(".onepage-pagination").css("margin-top", posTop);
+      $('ul.onepage-pagination').html(paginationList);
     }
     
     if(window.location.hash != "" && window.location.hash != "#1") {
@@ -326,6 +328,18 @@
             case 40:
               if (tag != 'input' && tag != 'textarea') el.moveDown()
             break;
+            case 33: //pageg up
+              if (tag != 'input' && tag != 'textarea') el.moveUp()
+            break;
+            case 34: //page dwn
+              if (tag != 'input' && tag != 'textarea') el.moveDown()
+            break;
+            case 36: //home
+              el.moveTo(1);
+            break;
+            case 35: //end
+              el.moveTo(total);
+            break;
             default: return;
           }
         }
@@ -337,4 +351,3 @@
   
   
 }(window.jQuery);
-
