@@ -26,7 +26,8 @@
     beforeMove: null,
     afterMove: null,
     loop: false,
-    responsiveFallback: false
+    responsiveFallback: false,
+    direction : 'vertical'
 	};
 	
 	/*------------------------------------------------*/
@@ -86,6 +87,7 @@
         total = sections.length,
         status = "off",
         topPos = 0,
+        leftPos = 0, // new
         lastAnimation = 0,
         quietPeriod = 500,
         paginationList = "";
@@ -93,13 +95,21 @@
     $.fn.transformPage = function(settings, pos, index, next_el) {
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index, next_el);
       $(this).css({
-        "-webkit-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-webkit-transform": ( settings.direction == 'horizontal' )
+          ? "translate3d(" + pos + "%, 0, 0)"
+          : "translate3d(0, " + pos + "%, 0)",
         "-webkit-transition": "-webkit-transform " + settings.animationTime + "ms " + settings.easing,
-        "-moz-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-moz-transform": ( settings.direction == 'horizontal' )
+          ? "translate3d(" + pos + "%, 0, 0)"
+          : "translate3d(0, " + pos + "%, 0)",
         "-moz-transition": "-moz-transform " + settings.animationTime + "ms " + settings.easing,
-        "-ms-transform": "translate3d(0, " + pos + "%, 0)", 
+        "-ms-transform": ( settings.direction == 'horizontal' )
+          ? "translate3d(" + pos + "%, 0, 0)"
+          : "translate3d(0, " + pos + "%, 0)",
         "-ms-transition": "-ms-transform " + settings.animationTime + "ms " + settings.easing,
-        "transform": "translate3d(0, " + pos + "%, 0)", 
+        "transform": ( settings.direction == 'horizontal' )
+          ? "translate3d(" + pos + "%, 0, 0)"
+          : "translate3d(0, " + pos + "%, 0)",
         "transition": "transform " + settings.animationTime + "ms " + settings.easing
       });
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -246,6 +256,21 @@
     $.each( sections, function(i) {
       $(this).addClass("ops-section").attr("data-index", i+1);
       topPos = topPos + 100;
+      $(this).css({
+        position: "absolute",
+        left: ( settings.direction == 'horizontal' )
+          ? leftPos + "%"
+          : 0,
+        top: ( settings.direction == 'vertical' || settings.direction != 'horizontal' )
+          ? topPos + "%"
+          : 0
+      });
+
+      if (settings.direction == 'horizontal')
+        leftPos = leftPos + 100;
+      else
+        topPos = topPos + 100;
+
       if(settings.pagination == true) {
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
       }
@@ -262,8 +287,13 @@
     // Create Pagination and Display Them
     if(settings.pagination == true) {
       $("<ul class='onepage-pagination'>" + paginationList + "</ul>").prependTo("body");
-      posTop = (el.find(".onepage-pagination").height() / 2) * -1;
-      el.find(".onepage-pagination").css("margin-top", posTop);
+        if( settings.direction == 'horizontal' ) {
+          posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
+          el.find(".onepage-pagination").css("margin-left", posLeft);
+        } else {
+          posTop = (el.find(".onepage-pagination").height() / 2) * -1;
+          el.find(".onepage-pagination").css("margin-top", posTop);
+        }
     }
     
     if(window.location.hash != "" && window.location.hash != "#1") {
@@ -337,4 +367,3 @@
   
   
 }(window.jQuery);
-
