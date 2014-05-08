@@ -55,6 +55,11 @@ $(".main").onepage_scroll({
                                     // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
                                     // the browser's width is less than 600, the fallback will kick in.
    disableMouseMove: false          // You can have the mouse wheel functionality disabled by setting this attribute to true. The default value is false.
+   moveUpKeys: [33, 38]             // This option allow you to specify key code for move up operation. NavigateUp/PageUp by default.
+   moveDownKeys: [34, 40]             // This option allow you to specify key code for move down operation. NavigateDown/PageDown by default.
+   backtoTopKeys: [36]             // This option allow you to specify key code for move to top operation. Home by default.
+   gotoBottom: [35]             // This option allow you to specify key code for move to bottom operation. End by default.
+
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.

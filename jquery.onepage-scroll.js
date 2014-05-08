@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.3
+ * jquery-onepage-scroll.js v1.3.4
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -27,7 +27,11 @@
         afterMove: null,
         loop: false,
         responsiveFallback: false,
-        disableMouseMove: false
+        disableMouseMove: false,
+        moveUpKeys: [33, 38],
+        moveDownKeys: [34, 40],
+        backtoTopKeys: [36],
+        gotoBottom: [35]
     };
 
     /*------------------------------------------------*/
@@ -338,16 +342,17 @@
             $(document).keydown(function(e) {
                 var tag = e.target.tagName.toLowerCase();
 
-                if (!$("body").hasClass("disabled-onepage-scroll")) {
-                    switch (e.which) {
-                        case 38:
-                            if (tag !== 'input' && tag !== 'textarea') el.moveUp();
-                            break;
-                        case 40:
-                            if (tag !== 'input' && tag !== 'textarea') el.moveDown();
-                            break;
-                        default:
-                            return;
+                if (!$("body").hasClass("disabled-onepage-scroll") && (tag !== 'input' && tag !== 'textarea')) {
+
+                    if ($.inArray(e.which, settings.moveUpKeys) > -1) {
+                        el.moveUp();
+                    } else if ($.inArray(e.which, settings.moveDownKeys) > -1) {
+                        el.moveDown();
+                    } else if ($.inArray(e.which, settings.backtoTopKeys) > -1) {
+                        el.moveTo(1);
+                    } else if ($.inArray(e.which, settings.gotoBottom) > -1) {
+                        var lastIndex = sections.last().data("index");
+                        el.moveTo(lastIndex);
                     }
                 }
 
