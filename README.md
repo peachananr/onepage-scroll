@@ -54,7 +54,7 @@ $(".main").onepage_scroll({
    responsiveFallback: false,        // You can fallback to normal page scroll by defining the width of the browser in which
                                     // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
                                     // the browser's width is less than 600, the fallback will kick in.
-   disableMouseMove: false          // You can have the mouse wheel functionality disabled by setting this attribute to true. The default value is false.
+   disableMouseMove: false,          // You can have the mouse wheel functionality disabled by setting this attribute to true. The default value is false.
    moveUpKeys: [33, 38]             // This option allow you to specify key code for move up operation. NavigateUp/PageUp by default.
    moveDownKeys: [34, 40]             // This option allow you to specify key code for move down operation. NavigateDown/PageDown by default.
    backtoTopKeys: [36]             // This option allow you to specify key code for move to top operation. Home by default.
