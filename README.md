@@ -17,6 +17,9 @@ see: http://jsfiddle.net/33WJx/
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
+##Looking for a Pure JS version?
+[Pure JS Version](http://www.thepetedesign.com/demos/purejs_onepage_scroll_demo.html)
+
 ## Compatibility
 Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
 
