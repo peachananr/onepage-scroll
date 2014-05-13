@@ -1,6 +1,6 @@
 {
   "name": "onepage-scroll",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "author": "Pete R",
   "main": [
     "jquery.onepage-scroll.js",
