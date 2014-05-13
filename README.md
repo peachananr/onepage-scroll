@@ -20,6 +20,9 @@ see: http://jsfiddle.net/33WJx/
 ##Looking for a Pure JS version?
 [Pure JS Version](http://www.thepetedesign.com/demos/purejs_onepage_scroll_demo.html)
 
+##Looking for a Zepto JS version?
+[Zepto Js Version](http://www.thepetedesign.com/demos/zepto_onepage_scroll_demo.html)
+
 ## Compatibility
 Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
 
@@ -113,6 +116,8 @@ This callback gets called after the move animation was performed.
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
 ## Other Resources
+- [Pure JS Version](http://www.thepetedesign.com/demos/purejs_onepage_scroll_demo.html)
+- [Zepto Js Version](http://www.thepetedesign.com/demos/zepto_onepage_scroll_demo.html)
 - [OnePageScroll.js: Creating an Apple’s iPhone 5S Website](http://www.onextrapixel.com/2013/09/18/onepagescroll-js-creating-an-apples-iphone-5s-website/)
 - [Eike Send's jQuery Swipe Events](https://github.com/eikes/jquery.swipe-events.js)
 - [CSS Easing generator by Matthew Lein](http://matthewlein.com/ceaser/)
