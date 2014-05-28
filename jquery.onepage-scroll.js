@@ -115,7 +115,7 @@
 
 		$.fn.moveDown = function() {
 			var el = $(this)
-			index = $(settings.sectionContainer +".active").data("index");
+			index = $(settings.sectionContainer +".active").data("index") || 1;
 			current = $(settings.sectionContainer + "[data-index='" + index + "']");
 			next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
 			if(next.length < 1) {
