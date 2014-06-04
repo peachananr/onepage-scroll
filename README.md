@@ -1,4 +1,4 @@
-#One Page Scroll by Pete R.
+#One Page Scroll 1.3 by Pete R.
 Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll plugin
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
 
@@ -16,12 +16,6 @@ see: http://jsfiddle.net/33WJx/
 
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
-
-##Looking for a Pure JS version?
-[Pure JS Version](http://www.thepetedesign.com/demos/purejs_onepage_scroll_demo.html)
-
-##Looking for a Zepto JS version?
-[Zepto Js Version](http://www.thepetedesign.com/demos/zepto_onepage_scroll_demo.html)
 
 ## Compatibility
 Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
@@ -57,12 +51,31 @@ $(".main").onepage_scroll({
    afterMove: function(index) {},   // This option accepts a callback function. The function will be called after the page moves.
    loop: false,                     // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
    keyboard: true,                  // You can activate the keyboard controls
-   responsiveFallback: false        // You can fallback to normal page scroll by defining the width of the browser in which
+   responsiveFallback: false,        // You can fallback to normal page scroll by defining the width of the browser in which
                                     // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
                                     // the browser's width is less than 600, the fallback will kick in.
+   direction: "vertical"            // You can now define the direction of the One Page Scroll animation. Options available are "vertical" and "horizontal". The default value is "vertical".  
 });
 ````
 And that's it. Now, your website should work the same way Apple's iPhone 5S website does. You should be able to swipe up/down as well (thanks to [Eike Send](https://github.com/eikes) for his swipe events!) when viewing your website on mobile phones.
+
+## Keyboard Shortcuts
+You can trigger page move with hotkeys as well:
+
+### Up arrow / Page Up
+Pressing the up arrow or the page up key allows you to move the page up by one.
+
+
+### Down arrow / Page Donw
+Pressing the down arrow or the page down key allows you to move the page down by one.
+
+
+### Home
+Pressing the home key brings you back to the first page.
+
+
+### End
+Pressing the end key brings you to the last page.
 
 ## Public Methods
 You can also trigger page move programmatically as well:
@@ -91,23 +104,23 @@ This method allows you to move to the specified page index programatically.
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
 
-### beforeMove(next_page_index, next_section_element)
+### beforeMove(current_page_index)
 This callback gets called before the plugin performs its move.
 
 ````javascript
   $(".main").onepage_scroll({
-    beforeMove: function(index, next_el) {
+    beforeMove: function(index) {
       ...
     }
   });
 ````
 
-### afterMove(next_page_index, next_section_element)
+### afterMove(next_page_index)
 This callback gets called after the move animation was performed.
 
 ````javascript
   $(".main").onepage_scroll({
-    afterMove: function(index, next_el) {
+    afterMove: function(index) {
       ...
     }
   });
@@ -116,8 +129,6 @@ This callback gets called after the move animation was performed.
 If you want to see more of my plugins, visit [The Pete Design](http://www.thepetedesign.com/#design), or follow me on [Twitter](http://www.twitter.com/peachananr) and [Github](http://www.github.com/peachananr).
 
 ## Other Resources
-- [Pure JS Version](http://www.thepetedesign.com/demos/purejs_onepage_scroll_demo.html)
-- [Zepto Js Version](http://www.thepetedesign.com/demos/zepto_onepage_scroll_demo.html)
 - [OnePageScroll.js: Creating an Apple’s iPhone 5S Website](http://www.onextrapixel.com/2013/09/18/onepagescroll-js-creating-an-apples-iphone-5s-website/)
 - [Eike Send's jQuery Swipe Events](https://github.com/eikes/jquery.swipe-events.js)
 - [CSS Easing generator by Matthew Lein](http://matthewlein.com/ceaser/)
