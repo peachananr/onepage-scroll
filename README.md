@@ -67,11 +67,11 @@ And that's it. Now, your website should work the same way Apple's iPhone 5S webs
 ## Public Methods
 You can also trigger page move programmatically as well:
 
-### $.fn.disable_onepage_scroll()
-This method allows you to onload the `onepage-scroll` functionality.
+### $.fn.destroy_onepage_scroll()
+This method allows you to unload the `onepage-scroll` functionality. This might be useful when you are developing SPA.
 
 ````javascript
-  $(".main").disable_onepage_scroll(options);
+  $(".main").destroy_onepage_scroll(options);
 ````
 >Note: Only `sectionContainer` is required in options.
 

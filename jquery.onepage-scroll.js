@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.4
+ * jquery-onepage-scroll.js v1.3.5
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -213,9 +213,9 @@
 
 
                 el.swipeEvents().bind("swipeDown", function(event) {
-                    if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-                    el.moveUp();
-                }).bind("swipeUp", function(event) {
+                        if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+                        el.moveUp();
+                    }).bind("swipeUp", function(event) {
                     if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
                     el.moveDown();
                 });
@@ -268,9 +268,9 @@
         });
 
         el.swipeEvents().bind("swipeDown", function(event) {
-            if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-            el.moveUp();
-        }).bind("swipeUp", function(event) {
+                if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+                el.moveUp();
+            }).bind("swipeUp", function(event) {
             if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
             el.moveDown();
         });
@@ -361,7 +361,7 @@
         return false;
     };
 
-    $.fn.disable_onepage_scroll = function(options) {
+    $.fn.destroy_onepage_scroll = function(options) {
         var settings = $.extend({}, defaults, options);
         var el = $(this);
         var sections = $(settings.sectionContainer);
