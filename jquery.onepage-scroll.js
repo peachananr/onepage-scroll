@@ -21,6 +21,7 @@
     easing: "ease",
     animationTime: 1000,
     pagination: true,
+    mousewheel: true,
     updateURL: false,
     keyboard: true,
     beforeMove: null,
@@ -239,11 +240,13 @@
           el.moveDown();
         });
 
-        $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-          event.preventDefault();
-          var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-          init_scroll(event, delta);
-        });
+        if(settings.mousewheel) {
+          $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+            event.preventDefault();
+            var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
+            init_scroll(event, delta);
+          });
+        }
       }
     }
 
@@ -358,11 +361,13 @@
     }
 
 
-    $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-      event.preventDefault();
-      var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
-    });
+    if(settings.mousewheel) {
+      $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+        event.preventDefault();
+        var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
+        if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
+      });
+    }
 
 
     if(settings.responsiveFallback != false) {
