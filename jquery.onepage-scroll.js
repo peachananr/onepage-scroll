@@ -192,7 +192,7 @@
         pos = ((page_index - 1) * 100) * -1;
 
         if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index);
             history.pushState( {}, document.title, href );
         }
         el.transformPage(settings, pos, page_index);
