@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.6
+ * jquery-onepage-scroll.js v1.3.7
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -77,6 +77,7 @@
                     if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
                         $this.unbind('touchmove', touchmove);
                     }
+                    event.preventDefault();
                 }
             }
 
