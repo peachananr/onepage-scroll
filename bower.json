@@ -1,13 +1,11 @@
 {
   "name": "onepage-scroll",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "author": "Pete R",
-  "contributors": [
-    {
-      "name": "Howard.zuo",
-      "email": "leftstick@qq.com"
-    }
-  ],
+  "contributors": [{
+    "name": "Howard.zuo",
+    "email": "leftstick@qq.com"
+  }],
   "main": [
     "jquery.onepage-scroll.js",
     "onepage-scroll.css"

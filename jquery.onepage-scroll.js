@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.8
+ * jquery-onepage-scroll.js v1.3.9
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -74,12 +74,10 @@
                     if (deltaY <= -50) {
                         $this.trigger("swipeDown");
                     }
-                    if (!$("body").hasClass("disabled-onepage-scroll")) {
-                        if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-                            $this.unbind('touchmove', touchmove);
-                        }
-                        event.preventDefault();
+                    if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+                        $this.unbind('touchmove', touchmove);
                     }
+                    event.preventDefault();
                 }
             }
 
@@ -203,13 +201,10 @@
         };
 
         function responsive() {
-            if (!this.swipeEvents) {
-                this.swipeEvents = el.swipeEvents();
-            }
             if ($(window).width() < settings.responsiveFallback) {
                 $("body").addClass("disabled-onepage-scroll");
                 $(document).unbind('mousewheel DOMMouseScroll');
-                this.swipeEvents.unbind("swipeDown swipeUp");
+                el.swipeEvents().unbind("swipeDown swipeUp touchstart touchmove");
             } else {
                 if ($("body").hasClass("disabled-onepage-scroll")) {
                     $("body").removeClass("disabled-onepage-scroll");
@@ -219,10 +214,10 @@
                 }
 
 
-                this.swipeEvents.bind("swipeDown", function(event) {
-                        if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-                        el.moveUp();
-                    }).bind("swipeUp", function(event) {
+                el.swipeEvents().bind("swipeDown", function(event) {
+                    if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+                    el.moveUp();
+                }).bind("swipeUp", function(event) {
                     if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
                     el.moveDown();
                 });
@@ -373,7 +368,7 @@
             $(this).removeClass("ops-section active").removeAttr("data-index");
         });
 
-        this.swipeEvents.unbind("swipeDown").unbind("swipeUp");
+        el.swipeEvents().unbind("swipeDown swipeUp touchstart touchmove");
         $("body").removeClass("disabled-onepage-scroll");
         $('.onepage-pagination li a').unbind('click');
         $('ul.onepage-pagination').remove();
