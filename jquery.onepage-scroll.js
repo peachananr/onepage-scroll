@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.7
+ * jquery-onepage-scroll.js v1.3.8
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -74,10 +74,12 @@
                     if (deltaY <= -50) {
                         $this.trigger("swipeDown");
                     }
-                    if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-                        $this.unbind('touchmove', touchmove);
+                    if (!$("body").hasClass("disabled-onepage-scroll")) {
+                        if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
+                            $this.unbind('touchmove', touchmove);
+                        }
+                        event.preventDefault();
                     }
-                    event.preventDefault();
                 }
             }
 
@@ -108,6 +110,7 @@
                 "transform": "translate3d(0, " + pos + "%, 0)",
                 "transition": "transform " + settings.animationTime + "ms " + settings.easing
             });
+
             $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                 if (typeof settings.afterMove == 'function') settings.afterMove(index, next_el);
             });
@@ -200,10 +203,13 @@
         };
 
         function responsive() {
+            if (!this.swipeEvents) {
+                this.swipeEvents = el.swipeEvents();
+            }
             if ($(window).width() < settings.responsiveFallback) {
                 $("body").addClass("disabled-onepage-scroll");
                 $(document).unbind('mousewheel DOMMouseScroll');
-                el.swipeEvents().unbind("swipeDown swipeUp");
+                this.swipeEvents.unbind("swipeDown swipeUp");
             } else {
                 if ($("body").hasClass("disabled-onepage-scroll")) {
                     $("body").removeClass("disabled-onepage-scroll");
@@ -213,7 +219,7 @@
                 }
 
 
-                el.swipeEvents().bind("swipeDown", function(event) {
+                this.swipeEvents.bind("swipeDown", function(event) {
                         if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
                         el.moveUp();
                     }).bind("swipeUp", function(event) {
@@ -367,7 +373,7 @@
             $(this).removeClass("ops-section active").removeAttr("data-index");
         });
 
-        el.swipeEvents().unbind("swipeDown").unbind("swipeUp");
+        this.swipeEvents.unbind("swipeDown").unbind("swipeUp");
         $("body").removeClass("disabled-onepage-scroll");
         $('.onepage-pagination li a').unbind('click');
         $('ul.onepage-pagination').remove();
