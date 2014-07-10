@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.5
+ * jquery-onepage-scroll.js v1.3.6
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -265,14 +265,6 @@
             if (settings.pagination === true) {
                 paginationList += "<li><a data-index='" + (i + 1) + "' href='#" + (i + 1) + "'></a></li>";
             }
-        });
-
-        el.swipeEvents().bind("swipeDown", function(event) {
-                if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-                el.moveUp();
-            }).bind("swipeUp", function(event) {
-            if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-            el.moveDown();
         });
 
         // Create Pagination and Display Them
