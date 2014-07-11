@@ -17,7 +17,7 @@ jQuery (1.9.0 or later)
 
 note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3(or greater than 2.1.0) and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
 
-see: http://plnkr.co/edit/?p=preview
+see: http://plnkr.co/edit/U3Tscez35JathRQYlAjz?p=preview
 
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
