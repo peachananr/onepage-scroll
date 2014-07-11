@@ -6,7 +6,7 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 
 This is forked from Pete R's  [One Page Scroll](https://github.com/peachananr/onepage-scroll), and provides more functionality and bug fixes.
 
-See: [Change Log](https://rawgit.com/leftstick/onepage-scroll/master/ChangeLog.md)
+See: [Change Log](https://github.com/leftstick/onepage-scroll/blob/master/ChangeLog.md)
 
 
 [![One Page Scroll](http://www.thepetedesign.com/images/onepage_scroll_image.png "One Page Scroll")](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
