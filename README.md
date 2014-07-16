@@ -19,6 +19,12 @@ note: jQuery 1.9.0 or later is strongly recommended because using jQuery less th
 
 Try it: http://plnkr.co/edit/U3Tscez35JathRQYlAjz?p=preview
 
+## Install
+
+```shell
+bower install git://github.com/leftstick/onepage-scroll.git#1.4.0 -S
+```
+
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
