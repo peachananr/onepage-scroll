@@ -1,3 +1,7 @@
+## v1.4.0 ##
+
+- [**New Feature**]: Add vertical response fallback, Since the view looks weird while someone working with his/her monitor as portrait. A blank area shown at bottom of the screen.
+
 ## v1.3.6 ~ 1.3.9 ##
 
 - [**Bug fix**]: swipe gesture doesn't work properly on touchable devices such as ipad.

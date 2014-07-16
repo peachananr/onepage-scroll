@@ -17,7 +17,7 @@ jQuery (1.9.0 or later)
 
 note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3(or greater than 2.1.0) and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
 
-see: http://plnkr.co/edit/U3Tscez35JathRQYlAjz?p=preview
+Try it: http://plnkr.co/edit/U3Tscez35JathRQYlAjz?p=preview
 
 ## Demo
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
@@ -59,6 +59,7 @@ $(".main").onepage_scroll({
    responsiveFallback: false,        // You can fallback to normal page scroll by defining the width of the browser in which
                                     // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
                                     // the browser's width is less than 600, the fallback will kick in.
+   responsiveHeightFallback: false, // you can fallback to normal page scroll by defining the height of the browser.
    disableMouseMove: false,          // You can have the mouse wheel functionality disabled by setting this attribute to true. The default value is false.
    moveUpKeys: [33, 38]             // This option allow you to specify key code for move up operation. NavigateUp/PageUp by default.
    moveDownKeys: [34, 40]             // This option allow you to specify key code for move down operation. NavigateDown/PageDown by default.

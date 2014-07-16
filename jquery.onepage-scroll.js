@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.9
+ * jquery-onepage-scroll.js v1.4.0
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -27,6 +27,7 @@
         afterMove: null,
         loop: false,
         responsiveFallback: false,
+        responsiveHeightFallback: false,
         disableMouseMove: false,
         moveUpKeys: [33, 38],
         moveDownKeys: [34, 40],
@@ -201,7 +202,7 @@
         };
 
         function responsive() {
-            if ($(window).width() < settings.responsiveFallback) {
+            if ((settings.responsiveFallback && $(window).width() < settings.responsiveFallback) || (settings.responsiveHeightFallback && $(window).height() > settings.responsiveHeightFallback)) {
                 $("body").addClass("disabled-onepage-scroll");
                 $(document).unbind('mousewheel DOMMouseScroll');
                 el.swipeEvents().unbind("swipeDown swipeUp touchstart touchmove");
@@ -215,9 +216,9 @@
 
 
                 el.swipeEvents().bind("swipeDown", function(event) {
-                    if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-                    el.moveUp();
-                }).bind("swipeUp", function(event) {
+                        if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+                        el.moveUp();
+                    }).bind("swipeUp", function(event) {
                     if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
                     el.moveDown();
                 });
@@ -324,7 +325,7 @@
 
 
 
-        if (settings.responsiveFallback !== false) {
+        if (settings.responsiveFallback || settings.responsiveHeightFallback) {
             $(window).resize(function() {
                 responsive();
             });
