@@ -1,4 +1,4 @@
-#One Page Scroll 1.3 by Pete R.
+#One Page Scroll 1.3.1 by Pete R.
 Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll plugin
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
 
@@ -18,7 +18,7 @@ see: http://jsfiddle.net/33WJx/
 [View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Not tested on IE.
+Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Should work fine on IE8 and IE9 as well.
 
 ## Basic Usage
 One Page Scroll let you transform your website into a one page scroll website that allows users to scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
@@ -38,11 +38,11 @@ To add this to your website, simply include the latest jQuery library together w
 </body>
 ````
 Container "Main" must be one level below the `body` tag in order to make it work full page. Now call the function to activate as follows:
- 
+
 ````javascript
 $(".main").onepage_scroll({
    sectionContainer: "section",     // sectionContainer accepts any kind of selector in case you don't want to use section
-   easing: "ease",                  // Easing options accepts the CSS3 easing animation such "ease", "linear", "ease-in", 
+   easing: "ease",                  // Easing options accepts the CSS3 easing animation such "ease", "linear", "ease-in",
                                     // "ease-out", "ease-in-out", or even cubic bezier value such as "cubic-bezier(0.175, 0.885, 0.420, 1.310)"
    animationTime: 1000,             // AnimationTime let you define how long each section takes to animate
    pagination: true,                // You can either show or hide the pagination. Toggle true for show, false for hide.
@@ -52,7 +52,7 @@ $(".main").onepage_scroll({
    loop: false,                     // You can have the page loop back to the top/bottom when the user navigates at up/down on the first/last page.
    keyboard: true,                  // You can activate the keyboard controls
    responsiveFallback: false,        // You can fallback to normal page scroll by defining the width of the browser in which
-                                    // you want the responsive fallback to be triggered. For example, set this to 600 and whenever 
+                                    // you want the responsive fallback to be triggered. For example, set this to 600 and whenever
                                     // the browser's width is less than 600, the fallback will kick in.
    direction: "vertical"            // You can now define the direction of the One Page Scroll animation. Options available are "vertical" and "horizontal". The default value is "vertical".  
 });
@@ -69,6 +69,8 @@ Pressing the up arrow or the page up key allows you to move the page up by one.
 ### Down arrow / Page Donw
 Pressing the down arrow or the page down key allows you to move the page down by one.
 
+### Spacebar
+Pressing the space key allows you to move the page down by one.
 
 ### Home
 Pressing the home key brings you back to the first page.
