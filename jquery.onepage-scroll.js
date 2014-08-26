@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3
+ * jquery-onepage-scroll.js v1.3.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -94,16 +94,29 @@
 
     $.fn.transformPage = function(settings, pos, index) {
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
-      $(this).css({
-        "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-        "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-        "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "-ms-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-        "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
-        "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-        "transition": "all " + settings.animationTime + "ms " + settings.easing
-      });
+
+      // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
+    	// an top animate so IE8 users can also use this script.
+    	if($('html').hasClass('ie8')){
+        if (settings.direction == 'horizontal') {
+          var toppos = (el.width()/100)*pos;
+          $(this).animate({left: toppos+'px'},settings.animationTime);
+        } else {
+          var toppos = (el.height()/100)*pos;
+          $(this).animate({top: toppos+'px'},settings.animationTime);
+        }
+    	} else{
+    	  $(this).css({
+    	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "-ms-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "transition": "all " + settings.animationTime + "ms " + settings.easing
+    	  });
+    	}
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
         if (typeof settings.afterMove == 'function') settings.afterMove(index);
       });
@@ -203,7 +216,7 @@
       //start modification
       var valForTest = false;
       var typeOfRF = typeof settings.responsiveFallback
-      
+
       if(typeOfRF == "number"){
       	valForTest = $(window).width() < settings.responsiveFallback;
       }
@@ -218,8 +231,8 @@
       		valForTest = $(window).width() < valFunction;
       	}
       }
-      
-      //end modification 
+
+      //end modification
       if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
         $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
@@ -273,8 +286,8 @@
         position: "absolute",
         top: topPos + "%"
       }).addClass("section").attr("data-index", i+1);
-      
-      
+
+
       $(this).css({
         position: "absolute",
         left: ( settings.direction == 'horizontal' )
@@ -284,13 +297,13 @@
           ? topPos + "%"
           : 0
       });
-      
+
       if (settings.direction == 'horizontal')
         leftPos = leftPos + 100;
       else
         topPos = topPos + 100;
-      
-      
+
+
       if(settings.pagination == true) {
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
       }
@@ -307,7 +320,7 @@
     // Create Pagination and Display Them
     if (settings.pagination == true) {
       if ($('ul.onepage-pagination').length < 1) $("<ul class='onepage-pagination'></ul>").prependTo("body");
-      
+
       if( settings.direction == 'horizontal' ) {
         posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
         el.find(".onepage-pagination").css("margin-left", posLeft);
@@ -320,7 +333,7 @@
 
     if(window.location.hash != "" && window.location.hash != "#1") {
       init_index =  window.location.hash.replace("#", "")
-      
+
       if (parseInt(init_index) <= total && parseInt(init_index) > 0) {
         $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
         $("body").addClass("viewing-page-"+ init_index)
@@ -349,7 +362,7 @@
       $("body").addClass("viewing-page-1")
       if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
     }
-    
+
     if(settings.pagination == true)  {
       $(".onepage-pagination li a").click(function (){
         var page_index = $(this).data("index");
@@ -385,6 +398,9 @@
             case 40:
               if (tag != 'input' && tag != 'textarea') el.moveDown()
             break;
+            case 32: //spacebar
+              if (tag != 'input' && tag != 'textarea') el.moveDown()
+            break;
             case 33: //pageg up
               if (tag != 'input' && tag != 'textarea') el.moveUp()
             break;
@@ -408,4 +424,3 @@
 
 
 }(window.jQuery);
-
