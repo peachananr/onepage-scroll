@@ -10,7 +10,7 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 
 jQuery (1.9.0 or later)
 
-note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3 and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerabiliry.
+note: jQuery 1.9.0 or later is strongly recommended because using jQuery less than 1.8.3 and jquery.onepage-scroll.js together turns out to be a hash-based XSS vulnerability.
 
 see: http://jsfiddle.net/33WJx/
 
@@ -66,7 +66,7 @@ You can trigger page move with hotkeys as well:
 Pressing the up arrow or the page up key allows you to move the page up by one.
 
 
-### Down arrow / Page Donw
+### Down arrow / Page Down
 Pressing the down arrow or the page down key allows you to move the page down by one.
 
 ### Spacebar
@@ -97,7 +97,7 @@ This method allows you to move the page down by one. This action is equivalent t
 ````
 
 ### $.fn.moveTo(page_index)
-This method allows you to move to the specified page index programatically.
+This method allows you to move to the specified page index programmatically.
 
 ````javascript
   $(".main").moveTo(3);
