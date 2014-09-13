@@ -400,7 +400,7 @@
             break;
             case 32: //spacebar
               if (tag != 'input' && tag != 'textarea')
-              	if (ev.shiftKey) {
+              	if (e.shiftKey) {
               	  el.moveUp();
               	}else{
               	  el.moveDown();
