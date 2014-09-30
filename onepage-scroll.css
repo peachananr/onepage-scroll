@@ -41,25 +41,25 @@ body, .onepage-wrapper, html {
   padding: 0;
   text-align: center;
 }
-.onepage-pagination li a{
+.onepage-pagination a {
   padding: 10px;
   width: 4px;
   height: 4px;
   display: block;
-  
+
 }
-.onepage-pagination li a:before{
+.onepage-pagination a:before{
   content: '';
   position: absolute;
   width: 4px;
   height: 4px;
-  background: rgba(0,0,0,0.85);
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
 }
 
-.onepage-pagination li a.active:before{
+.onepage-pagination a.active:before{
   width: 10px;
   height: 10px;
   background: none;
