@@ -28,13 +28,13 @@
     loop: true,
     responsiveFallback: false,
     direction : 'vertical'
-	};
+  };
 
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */
-	/*------------------------------------------------*/
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */
+  /*------------------------------------------------*/
 
-	$.fn.swipeEvents = function() {
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -96,8 +96,8 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
-    	// an top animate so IE8 users can also use this script.
-    	if($('html').hasClass('ie8')){
+      // an top animate so IE8 users can also use this script.
+      if($('html').hasClass('ie8')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
           $(this).animate({left: toppos+'px'},settings.animationTime);
@@ -105,18 +105,18 @@
           var toppos = (el.height()/100)*pos;
           $(this).animate({top: toppos+'px'},settings.animationTime);
         }
-    	} else{
-    	  $(this).css({
-    	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+      } else{
+        $(this).css({
+          "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translateX(" + pos + "%) translateZ(0)" : "translateY(" + pos + "%) translateZ(0)",
          "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
-         "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "-moz-transform": ( settings.direction == 'horizontal' ) ? "translateX(" + pos + "%) translateZ(0)" : "translateY(" + pos + "%) translateZ(0)",
          "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
-         "-ms-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "-ms-transform": ( settings.direction == 'horizontal' ) ? "translateX(" + pos + "%) translateZ(0)" : "translateY(" + pos + "%) translateZ(0)",
          "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
-         "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+         "transform": ( settings.direction == 'horizontal' ) ? "translateX(" + pos + "%) translateZ(0)" : "translateY(" + pos + "%) translateZ(0)",
          "transition": "all " + settings.animationTime + "ms " + settings.easing
-    	  });
-    	}
+        });
+      }
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
         if (typeof settings.afterMove == 'function') settings.afterMove(index);
       });
@@ -218,18 +218,18 @@
       var typeOfRF = typeof settings.responsiveFallback
 
       if(typeOfRF == "number"){
-      	valForTest = $(window).width() < settings.responsiveFallback;
+        valForTest = $(window).width() < settings.responsiveFallback;
       }
       if(typeOfRF == "boolean"){
-      	valForTest = settings.responsiveFallback;
+        valForTest = settings.responsiveFallback;
       }
       if(typeOfRF == "function"){
-      	valFunction = settings.responsiveFallback();
-      	valForTest = valFunction;
-      	typeOFv = typeof valForTest;
-      	if(typeOFv == "number"){
-      		valForTest = $(window).width() < valFunction;
-      	}
+        valFunction = settings.responsiveFallback();
+        valForTest = valFunction;
+        typeOFv = typeof valForTest;
+        if(typeOFv == "number"){
+          valForTest = $(window).width() < valFunction;
+        }
       }
 
       //end modification
