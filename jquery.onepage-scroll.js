@@ -399,7 +399,7 @@
               if (tag != 'input' && tag != 'textarea') el.moveDown()
             break;
             case 32: //spacebar
-              if (tag != 'input' && tag != 'textarea') el.moveDown()
+              if (tag != 'input' && tag != 'textarea' && tag != 'a' && tag != 'button') el.moveDown()
             break;
             case 33: //pageg up
               if (tag != 'input' && tag != 'textarea') el.moveUp()
