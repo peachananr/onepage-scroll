@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.4.0
+ * jquery-onepage-scroll.js v1.4.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -14,7 +14,7 @@
  *
  * ========================================================== */
 
-(function($) {
+(function ($) {
 
     var defaults = {
         sectionContainer: "section",
@@ -39,8 +39,8 @@
     /*  Credit: Eike Send for the awesome swipe event */
     /*------------------------------------------------*/
 
-    $.fn.swipeEvents = function() {
-        return this.each(function() {
+    $.fn.swipeEvents = function () {
+        return this.each(function () {
 
             var startX,
                 startY,
@@ -86,7 +86,7 @@
     };
 
 
-    $.fn.onepage_scroll = function(options) {
+    $.fn.onepage_scroll = function (options) {
         var settings = $.extend({}, defaults, options),
             el = $(this),
             sections = $(settings.sectionContainer),
@@ -97,7 +97,7 @@
             quietPeriod = 500,
             paginationList = "";
 
-        $.fn.transformPage = function(settings, pos, index, next_el) {
+        $.fn.transformPage = function (settings, pos, index, next_el) {
             if (typeof settings.beforeMove == 'function') settings.beforeMove(index, next_el);
             $(this).css({
                 "-webkit-transform": "translate3d(0, " + pos + "%, 0)",
@@ -110,12 +110,12 @@
                 "transition": "transform " + settings.animationTime + "ms " + settings.easing
             });
 
-            $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+            $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function (e) {
                 if (typeof settings.afterMove == 'function') settings.afterMove(index, next_el);
             });
         };
 
-        $.fn.moveDown = function() {
+        $.fn.moveDown = function () {
             var el = $(this),
                 index = $(settings.sectionContainer + ".active").data("index");
             current = $(settings.sectionContainer + "[data-index='" + index + "']");
@@ -148,7 +148,7 @@
             el.transformPage(settings, pos, next.data("index"), next);
         };
 
-        $.fn.moveUp = function() {
+        $.fn.moveUp = function () {
             var el = $(this),
                 index = $(settings.sectionContainer + ".active").data("index");
             current = $(settings.sectionContainer + "[data-index='" + index + "']");
@@ -180,7 +180,7 @@
             el.transformPage(settings, pos, next.data("index"), next);
         };
 
-        $.fn.moveTo = function(page_index) {
+        $.fn.moveTo = function (page_index) {
             current = $(settings.sectionContainer + ".active");
             next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
             if (next.length > 0) {
@@ -215,17 +215,17 @@
                 }
 
 
-                el.swipeEvents().bind("swipeDown", function(event) {
-                        if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-                        el.moveUp();
-                    }).bind("swipeUp", function(event) {
+                el.swipeEvents().bind("swipeDown", function (event) {
+                    if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+                    el.moveUp();
+                }).bind("swipeUp", function (event) {
                     if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
                     el.moveDown();
                 });
 
                 if (!settings.disableMouseMove) {
 
-                    $(document).bind('mousewheel DOMMouseScroll', function(event) {
+                    $(document).bind('mousewheel DOMMouseScroll', function (event) {
                         // event.preventDefault();
                         current = $(settings.sectionContainer + ".active");
                         var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
@@ -262,7 +262,7 @@
         $('body').css('overflow', 'hidden').css('height', '100%');
 
         el.addClass("onepage-wrapper").css("position", "relative");
-        $.each(sections, function(i) {
+        $.each(sections, function (i) {
             $(this).addClass("ops-section").attr("data-index", i + 1);
             topPos = topPos + 100;
             if (settings.pagination === true) {
@@ -303,14 +303,14 @@
             if (settings.pagination === true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
         }
         if (settings.pagination === true) {
-            $(".onepage-pagination li a").click(function() {
+            $(".onepage-pagination li a").click(function () {
                 var page_index = $(this).data("index");
                 el.moveTo(page_index);
             });
         }
 
         if (!settings.disableMouseMove) {
-            $(document).bind('mousewheel DOMMouseScroll', function(event) {
+            $(document).bind('mousewheel DOMMouseScroll', function (event) {
 
                 current = $(settings.sectionContainer + ".active");
                 var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
@@ -326,7 +326,7 @@
 
 
         if (settings.responsiveFallback || settings.responsiveHeightFallback) {
-            $(window).resize(function() {
+            $(window).resize(function () {
                 responsive();
             });
 
@@ -334,7 +334,7 @@
         }
 
         if (settings.keyboard === true) {
-            $(document).keydown(function(e) {
+            $(document).keydown(function (e) {
                 var tag = e.target.tagName.toLowerCase();
 
                 if (!$("body").hasClass("disabled-onepage-scroll") && (tag !== 'input' && tag !== 'textarea')) {
@@ -356,7 +356,7 @@
         return false;
     };
 
-    $.fn.destroy_onepage_scroll = function(options) {
+    $.fn.destroy_onepage_scroll = function (options) {
         var settings = $.extend({}, defaults, options);
         var el = $(this);
         var sections = $(settings.sectionContainer);
@@ -365,7 +365,7 @@
         $('body').css('overflow', '').css('height', '');
 
         el.removeClass("onepage-wrapper");
-        $.each(sections, function(i) {
+        $.each(sections, function (i) {
             //removeData('index') is necessary because in some situations (when dynamic change html) pagination breaks
             $(this).removeClass("ops-section active").removeAttr("data-index").removeData('index');
         });
@@ -376,7 +376,7 @@
         $('ul.onepage-pagination').remove();
 
         var classListOnBody = $('body').attr('class').split(/\s+/);
-        $.each(classListOnBody, function(index, item) {
+        $.each(classListOnBody, function (index, item) {
             if (item.indexOf('viewing-page-') >= 0) {
                 $('body').removeClass(item);
             }
