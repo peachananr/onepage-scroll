@@ -366,7 +366,8 @@
 
         el.removeClass("onepage-wrapper");
         $.each(sections, function(i) {
-            $(this).removeClass("ops-section active").removeAttr("data-index");
+            //removeData('index') is necessary because in some situations (when dynamic change html) pagination breaks
+            $(this).removeClass("ops-section active").removeAttr("data-index").removeData('index');
         });
 
         el.swipeEvents().unbind("swipeDown swipeUp touchstart touchmove");
