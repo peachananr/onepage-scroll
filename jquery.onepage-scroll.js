@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.3.1
+ * jquery-onepage-scroll.js v1.4
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -28,13 +28,13 @@
     loop: true,
     responsiveFallback: false,
     direction : 'vertical'
-	};
+  };
 
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */
-	/*------------------------------------------------*/
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */
+  /*------------------------------------------------*/
 
-	$.fn.swipeEvents = function() {
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -48,11 +48,13 @@
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
-            $this.bind('touchmove', touchmove);
+            //$this.bind('touchmove', touchmove);
+            $this.off('touchmove').on('touchmove', touchmove);
           }
         }
 
         function touchmove(event) {
+          event.preventDefault();
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
             var deltaX = startX - touches[0].pageX;
@@ -71,7 +73,8 @@
               $this.trigger("swipeDown");
             }
             if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              $this.unbind('touchmove', touchmove);
+              //$this.unbind('touchmove', touchmove);
+              $this.off('touchmove', touchmove);
             }
           }
         }
@@ -96,8 +99,8 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
-    	// an top animate so IE8 users can also use this script.
-    	if($('html').hasClass('ie8')){
+      // an top animate so IE8 users can also use this script.
+      if($('html').hasClass('ie8')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
           $(this).animate({left: toppos+'px'},settings.animationTime);
@@ -105,9 +108,9 @@
           var toppos = (el.height()/100)*pos;
           $(this).animate({top: toppos+'px'},settings.animationTime);
         }
-    	} else{
-    	  $(this).css({
-    	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+      } else{
+        $(this).css({
+          "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
          "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
@@ -115,8 +118,8 @@
          "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
          "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "transition": "all " + settings.animationTime + "ms " + settings.easing
-    	  });
-    	}
+        });
+      }
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
         if (typeof settings.afterMove == 'function') settings.afterMove(index);
       });
@@ -218,36 +221,36 @@
       var typeOfRF = typeof settings.responsiveFallback
 
       if(typeOfRF == "number"){
-      	valForTest = $(window).width() < settings.responsiveFallback;
+        valForTest = $(window).width() < settings.responsiveFallback;
       }
       if(typeOfRF == "boolean"){
-      	valForTest = settings.responsiveFallback;
+        valForTest = settings.responsiveFallback;
       }
       if(typeOfRF == "function"){
-      	valFunction = settings.responsiveFallback();
-      	valForTest = valFunction;
-      	typeOFv = typeof valForTest;
-      	if(typeOFv == "number"){
-      		valForTest = $(window).width() < valFunction;
-      	}
+        valFunction = settings.responsiveFallback();
+        valForTest = valFunction;
+        typeOFv = typeof valForTest;
+        if(typeOFv == "number"){
+          valForTest = $(window).width() < valFunction;
+        }
       }
 
       //end modification
       if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
         $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
-        el.swipeEvents().unbind("swipeDown swipeUp");
+        //el.swipeEvents().unbind("swipeDown swipeUp");
+        el.swipeEvents().off('swipeDown swipeUp');
       } else {
         if($("body").hasClass("disabled-onepage-scroll")) {
           $("body").removeClass("disabled-onepage-scroll");
           $("html, body, .wrapper").animate({ scrollTop: 0 }, "fast");
         }
 
-
-        el.swipeEvents().bind("swipeDown",  function(event){
+        el.swipeEvents().off('swipeDown').on('swipeDown', function(event){
           if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
           el.moveUp();
-        }).bind("swipeUp", function(event){
+        }).off('swipeUp').on('swipeUp', function(event){
           if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
           el.moveDown();
         });
