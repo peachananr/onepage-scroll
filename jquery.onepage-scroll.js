@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-onepage-scroll.js v1.4
+ * jquery-onepage-scroll.js v1.3.2
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -48,7 +48,6 @@
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
-            //$this.bind('touchmove', touchmove);
             $this.off('touchmove').on('touchmove', touchmove);
           }
         }
@@ -73,7 +72,6 @@
               $this.trigger("swipeDown");
             }
             if (Math.abs(deltaX) >= 50 || Math.abs(deltaY) >= 50) {
-              //$this.unbind('touchmove', touchmove);
               $this.off('touchmove', touchmove);
             }
           }
@@ -239,7 +237,6 @@
       if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
         $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
-        //el.swipeEvents().unbind("swipeDown swipeUp");
         el.swipeEvents().off('swipeDown swipeUp');
       } else {
         if($("body").hasClass("disabled-onepage-scroll")) {
