@@ -53,6 +53,10 @@
         }
 
         function touchmove(event) {
+          if($("body").hasClass("disabled-onepage-scroll")) {
+            // if plugin is disabled, pass the event
+            return;
+          }
           event.preventDefault();
           var touches = event.originalEvent.touches;
           if (touches && touches.length) {
