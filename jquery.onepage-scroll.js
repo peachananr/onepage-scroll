@@ -16,19 +16,28 @@
 
 !function($){
 
-  var defaults = {
-    sectionContainer: "section",
-    easing: "ease",
-    animationTime: 1000,
-    pagination: true,
-    updateURL: false,
-    keyboard: true,
-    beforeMove: null,
-    afterMove: null,
-    loop: true,
-    responsiveFallback: false,
-    direction : 'vertical'
-	};
+    var defaults = {
+            sectionContainer: "section",
+            easing: "ease",
+            animationTime: 1000,
+            pagination: true,
+            updateURL: false,
+            keyboard: true,
+            beforeMove: null,
+            afterMove: null,
+            loop: true,
+            responsiveFallback: false,
+            direction : 'vertical'
+        },
+        eventName = '';
+
+    if ('onwheel' in document) {
+        eventName = 'wheel';
+    } else if ('onmousewheel' in document) {
+        eventName = 'mousewheel';
+    } else {
+        eventName = 'MozMousePixelScroll';
+    }
 
 	/*------------------------------------------------*/
 	/*  Credit: Eike Send for the awesome swipe event */
@@ -83,7 +92,7 @@
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
         el = $(this),
-        sections = $(settings.sectionContainer)
+        sections = $(settings.sectionContainer),
         total = sections.length,
         status = "off",
         topPos = 0,
@@ -123,16 +132,17 @@
     }
 
     $.fn.moveDown = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+      var el = $(this),
+      index = $(settings.sectionContainer +".active").data("index"),
+      current = $(settings.sectionContainer + "[data-index='" + index + "']"),
+      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']"),
+      pos;
       if(next.length < 1) {
         if (settings.loop == true) {
           pos = 0;
           next = $(settings.sectionContainer + "[data-index='1']");
         } else {
-          return
+          return;
         }
 
       }else {
@@ -154,13 +164,14 @@
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
-    }
+    };
 
     $.fn.moveUp = function() {
-      var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
+      var el = $(this),
+      index = $(settings.sectionContainer +".active").data("index"),
+      current = $(settings.sectionContainer + "[data-index='" + index + "']"),
+      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']"),
+      pos;
 
       if(next.length < 1) {
         if (settings.loop == true) {
@@ -188,11 +199,12 @@
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
-    }
+    };
 
     $.fn.moveTo = function(page_index) {
-      current = $(settings.sectionContainer + ".active")
-      next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
+      var current = $(settings.sectionContainer + ".active"),
+        next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']"),
+        pos;
       if(next.length > 0) {
         if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
         current.removeClass("active")
@@ -210,12 +222,12 @@
         }
         el.transformPage(settings, pos, page_index);
       }
-    }
+    };
 
     function responsive() {
       //start modification
       var valForTest = false;
-      var typeOfRF = typeof settings.responsiveFallback
+      var typeOfRF = typeof settings.responsiveFallback;
 
       if(typeOfRF == "number"){
       	valForTest = $(window).width() < settings.responsiveFallback;
@@ -224,9 +236,9 @@
       	valForTest = settings.responsiveFallback;
       }
       if(typeOfRF == "function"){
-      	valFunction = settings.responsiveFallback();
+      	var valFunction = settings.responsiveFallback();
       	valForTest = valFunction;
-      	typeOFv = typeof valForTest;
+      	var typeOFv = typeof valForTest;
       	if(typeOFv == "number"){
       		valForTest = $(window).width() < valFunction;
       	}
@@ -235,7 +247,7 @@
       //end modification
       if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
-        $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
+        $(document).unbind(eventName);
         el.swipeEvents().unbind("swipeDown swipeUp");
       } else {
         if($("body").hasClass("disabled-onepage-scroll")) {
@@ -252,17 +264,16 @@
           el.moveDown();
         });
 
-        $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+        $(document).bind(eventName, function(event) {
           event.preventDefault();
-          var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-          init_scroll(event, delta);
+          init_scroll(event);
         });
       }
     }
 
 
-    function init_scroll(event, delta) {
-        deltaOfInterest = delta;
+    function init_scroll(event) {
+        var delta = -event.originalEvent.deltaY || -event.originalEvent.detail || event.originalEvent.wheelDelta;
         var timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
         if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
@@ -270,7 +281,7 @@
             return;
         }
 
-        if (deltaOfInterest < 0) {
+        if (delta < 0) {
           el.moveDown()
         } else {
           el.moveUp()
@@ -322,17 +333,17 @@
       if ($('ul.onepage-pagination').length < 1) $("<ul class='onepage-pagination'></ul>").prependTo("body");
 
       if( settings.direction == 'horizontal' ) {
-        posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
+        var posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
         el.find(".onepage-pagination").css("margin-left", posLeft);
       } else {
-        posTop = (el.find(".onepage-pagination").height() / 2) * -1;
+        var posTop = (el.find(".onepage-pagination").height() / 2) * -1;
         el.find(".onepage-pagination").css("margin-top", posTop);
       }
       $('ul.onepage-pagination').html(paginationList);
     }
 
     if(window.location.hash != "" && window.location.hash != "#1") {
-      init_index =  window.location.hash.replace("#", "")
+      var init_index =  window.location.hash.replace("#", "")
 
       if (parseInt(init_index) <= total && parseInt(init_index) > 0) {
         $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
@@ -350,7 +361,7 @@
             history.pushState( {}, document.title, href );
           }
         }
-        pos = ((init_index - 1) * 100) * -1;
+        var pos = ((init_index - 1) * 100) * -1;
         el.transformPage(settings, pos, init_index);
       } else {
         $(settings.sectionContainer + "[data-index='1']").addClass("active")
@@ -371,10 +382,9 @@
     }
 
 
-    $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+    $(document).bind(eventName, function(event) {
       event.preventDefault();
-      var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
+      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event);
     });
 
 
