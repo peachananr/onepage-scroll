@@ -378,6 +378,9 @@
         responsiveFallback: 600,
         loop: true
       });
+      $('body').bind('touchmove', function (ev) {
+      ev.preventDefault();
+      });
 		});
 		
 	</script>
