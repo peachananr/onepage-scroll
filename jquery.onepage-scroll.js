@@ -392,10 +392,16 @@
 
         if (!$("body").hasClass("disabled-onepage-scroll")) {
           switch(e.which) {
-            case 38:
+            case 38: //up
               if (tag != 'input' && tag != 'textarea') el.moveUp()
             break;
-            case 40:
+            case 40: //down
+              if (tag != 'input' && tag != 'textarea') el.moveDown()
+            break;
+            case 37: //left
+              if (tag != 'input' && tag != 'textarea') el.moveUp()
+            break;
+            case 39: //right
               if (tag != 'input' && tag != 'textarea') el.moveDown()
             break;
             case 32: //spacebar
