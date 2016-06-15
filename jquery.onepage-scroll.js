@@ -83,7 +83,7 @@
   $.fn.onepage_scroll = function(options){
     var settings = $.extend({}, defaults, options),
         el = $(this),
-        sections = $(settings.sectionContainer)
+        sections = $(settings.sectionContainer),
         total = sections.length,
         status = "off",
         topPos = 0,
@@ -322,10 +322,10 @@
       if ($('ul.onepage-pagination').length < 1) $("<ul class='onepage-pagination'></ul>").prependTo("body");
 
       if( settings.direction == 'horizontal' ) {
-        posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
+        var posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
         el.find(".onepage-pagination").css("margin-left", posLeft);
       } else {
-        posTop = (el.find(".onepage-pagination").height() / 2) * -1;
+        var posTop = (el.find(".onepage-pagination").height() / 2) * -1;
         el.find(".onepage-pagination").css("margin-top", posTop);
       }
       $('ul.onepage-pagination').html(paginationList);
