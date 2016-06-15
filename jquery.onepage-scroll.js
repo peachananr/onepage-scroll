@@ -124,13 +124,13 @@
 
     $.fn.moveDown = function() {
       var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
+      var index = $(settings.sectionContainer +".active").data("index");
+      var current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      var next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
       if(next.length < 1) {
         if (settings.loop == true) {
-          pos = 0;
-          next = $(settings.sectionContainer + "[data-index='1']");
+          var pos = 0;
+          var next = $(settings.sectionContainer + "[data-index='1']");
         } else {
           return
         }
@@ -158,20 +158,20 @@
 
     $.fn.moveUp = function() {
       var el = $(this)
-      index = $(settings.sectionContainer +".active").data("index");
-      current = $(settings.sectionContainer + "[data-index='" + index + "']");
-      next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
+      var index = $(settings.sectionContainer +".active").data("index");
+      var current = $(settings.sectionContainer + "[data-index='" + index + "']");
+      var next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
 
       if(next.length < 1) {
         if (settings.loop == true) {
-          pos = ((total - 1) * 100) * -1;
-          next = $(settings.sectionContainer + "[data-index='"+total+"']");
+          var pos = ((total - 1) * 100) * -1;
+          var next = $(settings.sectionContainer + "[data-index='"+total+"']");
         }
         else {
           return
         }
       }else {
-        pos = ((next.data("index") - 1) * 100) * -1;
+        var pos = ((next.data("index") - 1) * 100) * -1;
       }
       if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
       current.removeClass("active")
@@ -202,7 +202,7 @@
         $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
         $("body").addClass("viewing-page-"+next.data("index"))
 
-        pos = ((page_index - 1) * 100) * -1;
+        var pos = ((page_index - 1) * 100) * -1;
 
         if (history.replaceState && settings.updateURL == true) {
             var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
