@@ -92,33 +92,37 @@
         quietPeriod = 500,
         paginationList = "";
 
-    $.fn.transformPage = function(settings, pos, index) {
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
+     $(this).unbind();
+
+    $.fn.transformPage = function(settings, pos, index, silent) {
+
+      if (typeof settings.beforeMove == 'function' && !silent ) settings.beforeMove(index);
+      var animationTime = (silent == true) ? 0 : settings.animationTime;
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
     	// an top animate so IE8 users can also use this script.
     	if($('html').hasClass('ie8')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
-          $(this).animate({left: toppos+'px'},settings.animationTime);
+          $(this).animate({left: toppos+'px'}, animationTime);
         } else {
           var toppos = (el.height()/100)*pos;
-          $(this).animate({top: toppos+'px'},settings.animationTime);
+          $(this).animate({top: toppos+'px'}, animationTime);
         }
     	} else{
     	  $(this).css({
     	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-         "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "-webkit-transition": "all " + animationTime + "ms " + settings.easing,
          "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-         "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "-moz-transition": "all " + animationTime + "ms " + settings.easing,
          "-ms-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-         "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
+         "-ms-transition": "all " + animationTime + "ms " + settings.easing,
          "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
-         "transition": "all " + settings.animationTime + "ms " + settings.easing
+         "transition": "all " + animationTime + "ms " + settings.easing
     	  });
     	}
       $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-        if (typeof settings.afterMove == 'function') settings.afterMove(index);
+        if (typeof settings.afterMove == 'function' && !silent) settings.afterMove(index);
       });
     }
 
@@ -138,7 +142,7 @@
       }else {
         pos = (index * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove( next.data("index"));
+
       current.removeClass("active")
       next.addClass("active");
       if(settings.pagination == true) {
@@ -162,8 +166,11 @@
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
 
+      console.log(index , current,  next, settings)
+
       if(next.length < 1) {
         if (settings.loop == true) {
+          console.log('loop ', total)
           pos = ((total - 1) * 100) * -1;
           next = $(settings.sectionContainer + "[data-index='"+total+"']");
         }
@@ -173,7 +180,7 @@
       }else {
         pos = ((next.data("index") - 1) * 100) * -1;
       }
-      if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
+
       current.removeClass("active")
       next.addClass("active")
       if(settings.pagination == true) {
@@ -194,7 +201,7 @@
       current = $(settings.sectionContainer + ".active")
       next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
       if(next.length > 0) {
-        if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
+
         current.removeClass("active")
         next.addClass("active")
         $(".onepage-pagination li a" + ".active").removeClass("active");
@@ -209,6 +216,28 @@
             history.pushState( {}, document.title, href );
         }
         el.transformPage(settings, pos, page_index);
+      }
+    }
+
+    $.fn.silentMoveTo = function(page_index) {
+      current = $(settings.sectionContainer + ".active")
+      next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
+      if(next.length > 0) {
+
+        current.removeClass("active")
+        next.addClass("active")
+        $(".onepage-pagination li a" + ".active").removeClass("active");
+        $(".onepage-pagination li a" + "[data-index='" + (page_index) + "']").addClass("active");
+        $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
+        $("body").addClass("viewing-page-"+next.data("index"))
+
+        pos = ((page_index - 1) * 100) * -1;
+
+        if (history.replaceState && settings.updateURL == true) {
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
+            history.pushState( {}, document.title, href );
+        }
+        el.transformPage(settings, pos, page_index, true);
       }
     }
 
@@ -387,6 +416,7 @@
     }
 
     if(settings.keyboard == true) {
+      $(document).unbind('keydown');
       $(document).keydown(function(e) {
         var tag = e.target.tagName.toLowerCase();
 
