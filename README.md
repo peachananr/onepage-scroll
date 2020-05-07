@@ -4,7 +4,6 @@ Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](ht
 
 License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/deed.en_US)
 
-[![One Page Scroll](http://www.thepetedesign.com/images/onepage_scroll_image.png "One Page Scroll")](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
 
 ## Requirement
 
@@ -15,7 +14,7 @@ note: jQuery 1.9.0 or later is strongly recommended because using jQuery less th
 see: http://jsfiddle.net/33WJx/
 
 ## Demo
-[View demo](http://www.thepetedesign.com/demos/onepage_scroll_demo.html)
+[View demo](http://peachananr.github.io/onepage-scroll/Demo/demo.html)
 
 ## Compatibility
 Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Should work fine on IE8 and IE9 as well.
