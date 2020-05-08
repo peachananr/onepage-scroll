@@ -1,7 +1,7 @@
 /* ===========================================================
  * jquery-onepage-scroll.js v1.3.1
  * ===========================================================
- * Copyright 2013 Pete Rojwongsuriya.
+ * Copyright 2014 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
  *
  * Create an Apple-like website that let user scroll
