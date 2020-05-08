@@ -582,6 +582,9 @@ body #bsap_aplink, body #bsap_aplink:hover { display: block; font-size: 10px; ma
         responsiveFallback: 600,
         loop: true
       });
+      $('body').bind('touchmove', function (ev) {
+      ev.preventDefault();
+      });
 		});
 		
 	</script>

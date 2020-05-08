@@ -1,6 +1,5 @@
 body, html {
   margin: 0;
-  overflow: hidden;
   -webkit-transition: opacity 400ms;
   -moz-transition: opacity 400ms;
   transition: opacity 400ms;
@@ -69,7 +68,7 @@ body, .onepage-wrapper, html {
 }
 
 .disabled-onepage-scroll, .disabled-onepage-scroll .wrapper {
-  overflow: auto;
+
 }
 
 .disabled-onepage-scroll .onepage-wrapper .section {
