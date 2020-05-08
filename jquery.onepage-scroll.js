@@ -150,7 +150,11 @@
       $("body").addClass("viewing-page-"+next.data("index"))
 
       if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+        if(index == total){
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + 1;
+        } else{ 
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+        }
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
@@ -184,7 +188,11 @@
       $("body").addClass("viewing-page-"+next.data("index"))
 
       if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+        if(index == 1){
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + total;
+        } else{
+          var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+        }
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
