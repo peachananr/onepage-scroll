@@ -27,7 +27,8 @@
     afterMove: null,
     loop: true,
     responsiveFallback: false,
-    direction : 'vertical'
+    direction : 'vertical',
+    quickScroll : false
 	};
 
 	/*------------------------------------------------*/
@@ -264,8 +265,8 @@
     function init_scroll(event, delta) {
         deltaOfInterest = delta;
         var timeNow = new Date().getTime();
-        // Cancel scroll if currently animating or within quiet period
-        if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
+        // Cancel scroll if currently animating or within quiet period while quickScroll is false
+        if(!settings.quickScroll && timeNow - lastAnimation < quietPeriod + settings.animationTime) {
             event.preventDefault();
             return;
         }
