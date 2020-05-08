@@ -65,7 +65,7 @@ You can trigger page move with hotkeys as well:
 Pressing the up arrow or the page up key allows you to move the page up by one.
 
 
-### Down arrow / Page Donw
+### Down arrow / Page Down
 Pressing the down arrow or the page down key allows you to move the page down by one.
 
 ### Spacebar
