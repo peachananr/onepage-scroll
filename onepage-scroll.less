@@ -1,0 +1,133 @@
+/*---------- VARIABLES ----------*/
+
+@color-bg: #000;
+@border-width: 1px;
+@size: 4px;
+@size-active: 10px;
+@transition-duration: 400ms;
+@z-index-pagination: 5;
+
+/*---------- MIXINS ----------*/
+
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+  -moz-transition: @transition;
+  -ms-transition: @transition;
+  -o-transition: @transition;
+}
+
+.transform(@transformation) {
+  -webkit-transform: @transformation;
+  -moz-transform: @transformation;
+  -ms-transform: @transformation;
+  transform: @transformation;
+}
+
+/*---------- ONEPAGE-SCROLL ----------*/
+
+body, html {
+  margin: 0;
+  overflow: hidden;
+  .transition(opacity @transition-duration);
+}
+
+body, .onepage-wrapper, html {
+  display: block;
+  position: static;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.onepage-wrapper {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  padding: 0;
+  -webkit-transform-style: preserve-3d;
+
+  .section {
+    width: 100%;
+    height: 100%;
+  }
+
+}
+
+.onepage-pagination {
+  position: absolute;
+  right: @size-active;
+  top: 50%;
+  z-index: @z-index-pagination;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+    text-align: center;
+  }
+
+  a {
+    padding: @size-active;
+    width: @size;
+    height: @size;
+    display: block;
+
+    &:before{
+      content: '';
+      position: absolute;
+      width: @size;
+      height: @size;
+      background: rgba(red(@color-bg), green(@color-bg), blue(@color-bg), .85);
+      .border-radius(@size-active);
+    }
+
+    &.active {
+
+      &:before{
+        width: @size-active;
+        height: @size-active;
+        background: none;
+        border: @border-width solid @color-bg;
+        margin-top: -@size;
+        left: @size-active - @border-width * 2;
+      }
+
+    }
+
+  }
+
+}
+
+.disabled-onepage-scroll {
+  overflow: auto;
+
+  .onepage-wrapper {
+    .transform(none) !important;
+    min-height: 100%;
+    overflow: auto;
+
+    .section {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+    }
+
+  }
+
+  .onepage-pagination {
+    display: none;
+  }
+
+}
+
+body.disabled-onepage-scroll, .disabled-onepage-scroll .onepage-wrapper, html {
+  position: inherit;
+}
