@@ -372,9 +372,11 @@
 
 
     $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-      event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
+      if(!$("body").hasClass("disabled-onepage-scroll")) {
+        event.preventDefault();
+        init_scroll(event, delta);
+      }
     });
 
 
