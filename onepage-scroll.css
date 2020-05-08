@@ -76,7 +76,9 @@ body, .onepage-wrapper, html {
   position: relative !important;
   top: auto !important;
   left: auto !important;
+  display: block;
 }
+
 .disabled-onepage-scroll .onepage-wrapper {
   -webkit-transform: none !important;
   -moz-transform: none !important;
@@ -85,11 +87,11 @@ body, .onepage-wrapper, html {
   min-height: 100%;
 }
 
-
 .disabled-onepage-scroll .onepage-pagination {
   display: none;
 }
 
 body.disabled-onepage-scroll, .disabled-onepage-scroll .onepage-wrapper, html {
   position: inherit;
+  overflow: scroll;
 }
