@@ -27,6 +27,7 @@
     afterMove: null,
     loop: true,
     responsiveFallback: false,
+    hrefReturn: true,
     direction : 'vertical'
   };
 
@@ -367,6 +368,7 @@
       $(".onepage-pagination li a").click(function (){
         var page_index = $(this).data("index");
         el.moveTo(page_index);
+        return settings.hrefReturn;
       });
     }
 
