@@ -210,10 +210,11 @@
         }
         el.transformPage(settings, pos, page_index);
       }
-      $.fn.getCurrentSection = function(){
+    }
+    $.fn.getCurrentSection = function(){
       	current = $(settings.sectionContainer + ".active");
       	return current.attr("data-index");
-      }
+    }
 
     function responsive() {
       //start modification
