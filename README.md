@@ -101,6 +101,12 @@ This method allows you to move to the specified page index programatically.
 ````javascript
   $(".main").moveTo(3);
 ````
+### $.fn.getCurrentSection()
+This method allows you get index current/active section.
+
+````javascript
+  $(".main").getCurrentSection();
+````
 
 ## Callbacks
 You can use callbacks to perform actions before or after the page move.
