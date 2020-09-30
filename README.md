@@ -1,3 +1,4 @@
+Read Me
 #One Page Scroll 1.3.1 by Pete R.
 Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll plugin
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
@@ -17,7 +18,7 @@ see: http://jsfiddle.net/33WJx/
 [View demo](http://peachananr.github.io/onepage-scroll/Demo/demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop and smartphones have been tested. Should work fine on IE8 and IE9 as well.
+Modern browsers such as Chrome, Firefox, microsoft edge,opera and Safari on both desktop and smartphones have been tested. Should work fine on IE8 and IE9 as well.
 
 ## Basic Usage
 One Page Scroll let you transform your website into a one page scroll website that allows users to scroll one page at a time. It is perfect for creating a website in which you want to present something to the viewers. For example, [Apple's iPhone 5S website](http://www.apple.com/iphone-5s/) uses the same technique.
