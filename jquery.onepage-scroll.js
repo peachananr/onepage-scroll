@@ -245,15 +245,15 @@
 
 
         el.swipeEvents().bind("swipeDown",  function(event){
-          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+          if (!$("body").hasClass("disabled-onepage-scroll")) document.addEventListener('swipeDown', { passive: false });
           el.moveUp();
         }).bind("swipeUp", function(event){
-          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+          if (!$("body").hasClass("disabled-onepage-scroll")) document.addEventListener('swipeUp', { passive: false });
           el.moveDown();
         });
 
         $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-          event.preventDefault();
+          document.addEventListener('mousewheel DOMMouseScroll MozMousePixelScroll', { passive: false });
           var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
           init_scroll(event, delta);
         });
@@ -266,7 +266,7 @@
         var timeNow = new Date().getTime();
         // Cancel scroll if currently animating or within quiet period
         if(timeNow - lastAnimation < quietPeriod + settings.animationTime) {
-            event.preventDefault();
+            document.addEventListener('mousewheel DOMMouseScroll MozMousePixelScroll', { passive: false });
             return;
         }
 
@@ -310,10 +310,10 @@
     });
 
     el.swipeEvents().bind("swipeDown",  function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+      if (!$("body").hasClass("disabled-onepage-scroll")) document.addEventListener('swipeDown', { passive: false });
       el.moveUp();
     }).bind("swipeUp", function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+      if (!$("body").hasClass("disabled-onepage-scroll")) document.addEventListener('swipeUp', { passive: false });
       el.moveDown();
     });
 
@@ -372,7 +372,8 @@
 
 
     $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-      event.preventDefault();
+
+      document.addEventListener('mousewheel DOMMouseScroll MozMousePixelScroll', { passive: false });
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
     });
