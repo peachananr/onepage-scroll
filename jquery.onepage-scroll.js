@@ -27,8 +27,11 @@
     afterMove: null,
     loop: true,
     responsiveFallback: false,
-    direction : 'vertical'
+    direction : 'vertical',
+    scrollTimeout: 3000
 	};
+
+  var keyDown = true;
 
 	/*------------------------------------------------*/
 	/*  Credit: Eike Send for the awesome swipe event */
@@ -390,7 +393,11 @@
       $(document).keydown(function(e) {
         var tag = e.target.tagName.toLowerCase();
 
-        if (!$("body").hasClass("disabled-onepage-scroll")) {
+        if (!$("body").hasClass("disabled-onepage-scroll") && keyDown == true) {
+          keyDown = false;
+          setTimeout(function(){
+            keyDown = true
+          }, settings.scrollTimeout);
           switch(e.which) {
             case 38:
               if (tag != 'input' && tag != 'textarea') el.moveUp()
