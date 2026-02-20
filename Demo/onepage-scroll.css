@@ -36,6 +36,9 @@ body, .onepage-wrapper, html {
   list-style: none;
   margin: 0;
   padding: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .onepage-pagination li {
   padding: 0;
