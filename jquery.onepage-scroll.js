@@ -27,7 +27,8 @@
     afterMove: null,
     loop: true,
     responsiveFallback: false,
-    direction : 'vertical'
+    direction : 'vertical',
+    scrollEvents: true
 	};
 
 	/*------------------------------------------------*/
@@ -235,28 +236,31 @@
       //end modification
       if (valForTest) {
         $("body").addClass("disabled-onepage-scroll");
-        $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
-        el.swipeEvents().unbind("swipeDown swipeUp");
+        if (settings.scrollEvents == true) {
+            $(document).unbind('mousewheel DOMMouseScroll MozMousePixelScroll');
+            el.swipeEvents().unbind("swipeDown swipeUp");
+        }
       } else {
         if($("body").hasClass("disabled-onepage-scroll")) {
           $("body").removeClass("disabled-onepage-scroll");
           $("html, body, .wrapper").animate({ scrollTop: 0 }, "fast");
         }
 
+        if (settings.scrollEvents == true) {
+            el.swipeEvents().bind("swipeDown",  function(event){
+              if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+              el.moveUp();
+            }).bind("swipeUp", function(event){
+              if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+              el.moveDown();
+            });
 
-        el.swipeEvents().bind("swipeDown",  function(event){
-          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-          el.moveUp();
-        }).bind("swipeUp", function(event){
-          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-          el.moveDown();
-        });
-
-        $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-          event.preventDefault();
-          var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-          init_scroll(event, delta);
-        });
+            $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+              event.preventDefault();
+              var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
+              init_scroll(event, delta);
+            });
+        }
       }
     }
 
@@ -309,13 +313,15 @@
       }
     });
 
-    el.swipeEvents().bind("swipeDown",  function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-      el.moveUp();
-    }).bind("swipeUp", function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-      el.moveDown();
-    });
+    if (settings.scrollEvents == true) {
+        el.swipeEvents().bind("swipeDown",  function(event){
+          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+          el.moveUp();
+        }).bind("swipeUp", function(event){
+          if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
+          el.moveDown();
+        });
+    }
 
     // Create Pagination and Display Them
     if (settings.pagination == true) {
@@ -370,13 +376,13 @@
       });
     }
 
-
-    $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-      event.preventDefault();
-      var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
-    });
-
+    if (settings.scrollEvents == true) {
+        $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+          event.preventDefault();
+          var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
+          if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
+        });
+    }
 
     if(settings.responsiveFallback != false) {
       $(window).resize(function() {
