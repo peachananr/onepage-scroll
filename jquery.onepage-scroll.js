@@ -269,6 +269,8 @@
             event.preventDefault();
             return;
         }
+	    
+	if (deltaOfInterest == 0) return;
 
         if (deltaOfInterest < 0) {
           el.moveDown()
