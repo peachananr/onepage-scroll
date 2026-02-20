@@ -133,3 +133,5 @@ If you want to see more of my plugins, visit [The Pete Design](http://www.thepet
 - [OnePageScroll.js: Creating an Apple’s iPhone 5S Website](http://www.onextrapixel.com/2013/09/18/onepagescroll-js-creating-an-apples-iphone-5s-website/)
 - [Eike Send's jQuery Swipe Events](https://github.com/eikes/jquery.swipe-events.js)
 - [CSS Easing generator by Matthew Lein](http://matthewlein.com/ceaser/)
+
+## an amazing project
