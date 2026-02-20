@@ -319,8 +319,13 @@
 
     // Create Pagination and Display Them
     if (settings.pagination == true) {
-      if ($('ul.onepage-pagination').length < 1) $("<ul class='onepage-pagination'></ul>").prependTo("body");
+      if ($('ul.onepage-pagination').length < 1){
+        var ul_height = sections.length * 24;
 
+        $("<ul class='onepage-pagination'></ul>").prependTo("body");
+        $(".onepage-pagination").css("height", ul_height + "px");
+      }
+      
       if( settings.direction == 'horizontal' ) {
         posLeft = (el.find(".onepage-pagination").width() / 2) * -1;
         el.find(".onepage-pagination").css("margin-left", posLeft);
