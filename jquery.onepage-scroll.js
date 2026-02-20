@@ -48,6 +48,7 @@
           if (touches && touches.length) {
             startX = touches[0].pageX;
             startY = touches[0].pageY;
+            $this.unbind('touchmove', touchmove);
             $this.bind('touchmove', touchmove);
           }
         }
