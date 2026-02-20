@@ -391,28 +391,40 @@
         var tag = e.target.tagName.toLowerCase();
 
         if (!$("body").hasClass("disabled-onepage-scroll")) {
-          switch(e.which) {
-            case 38:
+          var isShift;
+          if(window.event) {
+            key = window.event.keyCode;
+            isShift = !!window.event.shiftKey;
+          } else {
+            key = ev.which;
+            isShift = !!ev.shiftKey;
+          }
+
+          switch(true) {
+            case key = 38:
               if (tag != 'input' && tag != 'textarea') el.moveUp()
-            break;
-            case 40:
+              break;
+            case key = 40:
               if (tag != 'input' && tag != 'textarea') el.moveDown()
-            break;
-            case 32: //spacebar
+              break;
+            case key = 32 && isShift:
+              if (tag != 'input' && tag != 'textarea') el.moveUp();
+              break;
+            case key = 32 && !isShift: //spacebar
               if (tag != 'input' && tag != 'textarea') el.moveDown()
-            break;
-            case 33: //pageg up
+              break;
+            case key = 33: //pageg up
               if (tag != 'input' && tag != 'textarea') el.moveUp()
-            break;
-            case 34: //page dwn
+              break;
+            case key = 34: //page dwn
               if (tag != 'input' && tag != 'textarea') el.moveDown()
-            break;
-            case 36: //home
+              break;
+            case key = 36: //home
               el.moveTo(1);
-            break;
-            case 35: //end
+              break;
+            case key = 35: //end
               el.moveTo(total);
-            break;
+              break;
             default: return;
           }
         }
