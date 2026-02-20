@@ -51,7 +51,7 @@ body, .onepage-wrapper, html {
 .onepage-pagination li a:before{
   content: '';
   position: absolute;
-  width: 4px;
+  width: 5px;
   height: 4px;
   background: rgba(0,0,0,0.85);
   border-radius: 10px;
