@@ -5,7 +5,7 @@ Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](ht
 License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/deed.en_US)
 
 
-## Requirement
+## Need the following 
 
 jQuery (1.9.0 or later)
 
